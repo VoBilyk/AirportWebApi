@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 using Airport.DAL.Entities;
+
 
 namespace Airport.DAL.Repositories
 {
@@ -10,9 +13,9 @@ namespace Airport.DAL.Repositories
     {
         public TicketRepository(AirportContext contex) : base(contex) { }
 
-        public override List<Ticket> GetAll()
+        public override async Task<List<Ticket>> GetAllAsync()
         {
-            return dbSet.Include(i => i.Flight).ToList();
+            return await dbSet.Include(i => i.Flight).ToListAsync();
         }
 
         public override Ticket Get(Guid id)

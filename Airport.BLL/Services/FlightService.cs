@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
@@ -31,9 +33,10 @@ namespace Airport.BLL.Services
             return mapper.Map<Flight, FlightDto>(db.FlightRepository.Get(id));
         }
 
-        public List<FlightDto> GetAll()
+        public async Task<List<FlightDto>> GetAllAsync()
         {
-            return mapper.Map<List<Flight>, List<FlightDto>>(db.FlightRepository.GetAll());
+            var flights = db.FlightRepository.GetAllAsync();
+            return await mapper.Map<Task<List<Flight>>, Task<List<FlightDto>>>(flights);
         }
 
         public FlightDto Create(FlightDto flightDto)
@@ -47,7 +50,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 db.FlightRepository.Create(flight);
-                db.SaveChanges();
+                db.SaveChangesAsync();
             }
             else
             {
@@ -68,7 +71,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 db.FlightRepository.Update(flight);
-                db.SaveChanges();
+                db.SaveChangesAsync();
             }
             else
             {
@@ -81,13 +84,13 @@ namespace Airport.BLL.Services
         public void Delete(Guid id)
         {
             db.FlightRepository.Delete(id);
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
 
         public void DeleteAll()
         {
             db.FlightRepository.Delete();
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
     }
 }

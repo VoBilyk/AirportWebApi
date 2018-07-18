@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using Airport.BLL.Interfaces;
@@ -29,9 +30,10 @@ namespace Airport.BLL.Services
             return mapper.Map<AeroplaneType, AeroplaneTypeDto>(db.AeroplaneTypeRepository.Get(id));
         }
 
-        public List<AeroplaneTypeDto> GetAll()
+        public async Task<List<AeroplaneTypeDto>> GetAllAsync()
         {
-            return mapper.Map<List<AeroplaneType>, List<AeroplaneTypeDto>>(db.AeroplaneTypeRepository.GetAll());
+            var aeroplaneTypes = db.AeroplaneTypeRepository.GetAllAsync();
+            return await mapper.Map<Task<List<AeroplaneType>>, Task<List<AeroplaneTypeDto>>>(aeroplaneTypes);
         }
 
         public AeroplaneTypeDto Create(AeroplaneTypeDto aeroplaneTypeDto)
@@ -44,7 +46,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 db.AeroplaneTypeRepository.Create(aeroplaneType);
-                db.SaveChanges();
+                db.SaveChangesAsync();
             }
             else
             {
@@ -64,7 +66,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 db.AeroplaneTypeRepository.Update(aeroplaneType);
-                db.SaveChanges();
+                db.SaveChangesAsync();
             }
             else
             {
@@ -77,13 +79,13 @@ namespace Airport.BLL.Services
         public void Delete(Guid id)
         {
             db.AeroplaneTypeRepository.Delete(id);
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
 
         public void DeleteAll()
         {
             db.AeroplaneTypeRepository.Delete();
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 using Airport.DAL.Interfaces;
+
 
 namespace Airport.DAL.Repositories
 {
@@ -19,12 +21,25 @@ namespace Airport.DAL.Repositories
 
         }
 
+        public Task<List<TEntity>> FindAsync(Func<TEntity, bool> predicate)
+        {
+            return await dbSet.ToListAsync();
+        }
 
         public virtual TEntity Get(Guid id)
         {
+            //var item = dbSet.FindAsync(id);
+
+            //if(item == null)
+            //{
+            //    throw new ArgumentException($"Can`t find item by id:{id}");
+            //}
+
+            //return await item;
+
             var item = dbSet.Find(id);
 
-            if(item == null)
+            if (item == null)
             {
                 throw new ArgumentException($"Can`t find item by id:{id}");
             }
@@ -32,9 +47,9 @@ namespace Airport.DAL.Repositories
             return item;
         }
 
-        public virtual List<TEntity> GetAll()
+        public virtual async Task<List<TEntity>> GetAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
         public virtual void Create(TEntity item)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Airport.BLL.Interfaces
 {
@@ -7,7 +8,7 @@ namespace Airport.BLL.Interfaces
     {
         TDto Get(Guid id);
 
-        List<TDto> GetAll();
+        Task<List<TDto>> GetAllAsync();
 
         TDto Create(TDto dto);
 

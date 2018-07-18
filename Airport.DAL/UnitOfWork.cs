@@ -119,9 +119,9 @@ namespace Airport.DAL
             }
         }
 
-        public void SaveChanges()
+        public async void SaveChangesAsync()
         {
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

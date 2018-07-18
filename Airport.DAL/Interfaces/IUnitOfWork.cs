@@ -20,6 +20,6 @@ namespace Airport.DAL.Interfaces
 
         IRepository<Stewardess> StewardessRepositiry { get; }
 
-        void SaveChanges();
+        void SaveChangesAsync();
     }
 }

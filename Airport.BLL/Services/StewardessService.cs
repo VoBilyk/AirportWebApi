@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
@@ -29,9 +31,10 @@ namespace Airport.BLL.Services
             return mapper.Map<Stewardess, StewardessDto>(db.StewardessRepositiry.Get(id));
         }
 
-        public List<StewardessDto> GetAll()
+        public async Task<List<StewardessDto>> GetAllAsync()
         {
-            return mapper.Map<List<Stewardess>, List<StewardessDto>>(db.StewardessRepositiry.GetAll());
+            var stewardesses = db.StewardessRepositiry.GetAllAsync();
+            return await mapper.Map<Task<List<Stewardess>>, Task<List<StewardessDto>>>(stewardesses);
         }
 
         public StewardessDto Create(StewardessDto stewardessDto)
@@ -44,7 +47,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 db.StewardessRepositiry.Create(stewardess);
-                db.SaveChanges();
+                db.SaveChangesAsync();
             }
             else
             {
@@ -64,7 +67,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 db.StewardessRepositiry.Update(stewardess);
-                db.SaveChanges();
+                db.SaveChangesAsync();
             }
             else
             {
@@ -77,13 +80,13 @@ namespace Airport.BLL.Services
         public void Delete(Guid id)
         {
             db.StewardessRepositiry.Delete(id);
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
 
         public void DeleteAll()
         {
             db.StewardessRepositiry.Delete();
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
     }
 }
