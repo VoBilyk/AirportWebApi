@@ -1,4 +1,7 @@
-﻿using Airport.DAL.Entities;
+﻿using System.Threading.Tasks;
+
+using Airport.DAL.Entities;
+
 
 namespace Airport.DAL.Interfaces
 {
@@ -20,6 +23,6 @@ namespace Airport.DAL.Interfaces
 
         IRepository<Stewardess> StewardessRepositiry { get; }
 
-        void SaveChangesAsync();
+        Task SaveChangesAsync();
     }
 }

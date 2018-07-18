@@ -50,7 +50,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 await db.AeroplaneRepository.CreateAsync(aeroplane);
-                db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -72,7 +72,7 @@ namespace Airport.BLL.Services
             if (validationResult.IsValid)
             {
                 await db.AeroplaneRepository.UpdateAsync(aeroplane);
-                db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -85,13 +85,13 @@ namespace Airport.BLL.Services
         public async Task DeleteAsync(Guid id)
         {
             await db.AeroplaneRepository.DeleteAsync(id);
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
 
-        public async Task DeleteAll()
+        public async Task DeleteAllAsync()
         {
             await db.AeroplaneRepository.DeleteAsync();
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
     }
 }
