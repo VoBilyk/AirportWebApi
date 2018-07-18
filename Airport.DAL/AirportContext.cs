@@ -27,7 +27,7 @@ namespace Airport.DAL
         {
             //Database.EnsureDeleted();
             //Database.Migrate();
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
             AirportInitializer.IntializateIfEmpty(this);
         }
 
