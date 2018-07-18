@@ -26,9 +26,10 @@ namespace Airport.BLL.Services
         }
 
 
-        public StewardessDto Get(Guid id)
+        public async Task<StewardessDto> GetAsync(Guid id)
         {
-            return mapper.Map<Stewardess, StewardessDto>(db.StewardessRepositiry.Get(id));
+            Stewardess stewardess = await db.StewardessRepositiry.GetAsync(id);
+            return mapper.Map<Stewardess, StewardessDto>(stewardess);
         }
 
         public async Task<List<StewardessDto>> GetAllAsync()
@@ -37,7 +38,7 @@ namespace Airport.BLL.Services
             return await mapper.Map<Task<List<Stewardess>>, Task<List<StewardessDto>>>(stewardesses);
         }
 
-        public StewardessDto Create(StewardessDto stewardessDto)
+        public async Task<StewardessDto> CreateAsync(StewardessDto stewardessDto)
         {
             var stewardess = mapper.Map<StewardessDto, Stewardess>(stewardessDto);
             stewardess.Id = Guid.NewGuid();
@@ -46,7 +47,7 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.StewardessRepositiry.Create(stewardess);
+                await db.StewardessRepositiry.CreateAsync(stewardess);
                 db.SaveChangesAsync();
             }
             else
@@ -57,7 +58,7 @@ namespace Airport.BLL.Services
             return mapper.Map<Stewardess, StewardessDto>(stewardess);
         }
 
-        public StewardessDto Update(Guid id, StewardessDto stewardessDto)
+        public async Task<StewardessDto> UpdateAsync(Guid id, StewardessDto stewardessDto)
         {
             var stewardess = mapper.Map<StewardessDto, Stewardess>(stewardessDto);
             stewardess.Id = id;
@@ -66,7 +67,7 @@ namespace Airport.BLL.Services
             
             if (validationResult.IsValid)
             {
-                db.StewardessRepositiry.Update(stewardess);
+                await db.StewardessRepositiry.UpdateAsync(stewardess);
                 db.SaveChangesAsync();
             }
             else
@@ -77,15 +78,15 @@ namespace Airport.BLL.Services
             return mapper.Map<Stewardess, StewardessDto>(stewardess);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.StewardessRepositiry.Delete(id);
+            await db.StewardessRepositiry.DeleteAsync(id);
             db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.StewardessRepositiry.Delete();
+            await db.StewardessRepositiry.DeleteAsync();
             db.SaveChangesAsync();
         }
     }

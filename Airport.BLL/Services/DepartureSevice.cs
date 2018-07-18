@@ -26,9 +26,10 @@ namespace Airport.BLL.Services
         }
 
 
-        public DepartureDto Get(Guid id)
+        public async Task<DepartureDto> GetAsync(Guid id)
         {
-            return mapper.Map<Departure, DepartureDto>(db.DepartureRepository.Get(id));
+            Departure item = await db.DepartureRepository.GetAsync(id);
+            return mapper.Map<Departure, DepartureDto>(item);
         }
 
         public async Task<List<DepartureDto>> GetAllAsync()
@@ -37,18 +38,18 @@ namespace Airport.BLL.Services
             return await mapper.Map<Task<List<Departure>>, Task<List<DepartureDto>>>(departures);
         }
 
-        public DepartureDto Create(DepartureDto departureDto)
+        public async Task<DepartureDto> CreateAsync(DepartureDto departureDto)
         {
             var departure = mapper.Map<DepartureDto, Departure>(departureDto);
             departure.Id = Guid.NewGuid();
-            departure.Crew = db.CrewRepositiry.Get(departureDto.CrewId);
-            departure.Airplane = db.AeroplaneRepository.Get(departureDto.AirplaneId);
+            departure.Crew = await db.CrewRepositiry.GetAsync(departureDto.CrewId);
+            departure.Airplane = await db.AeroplaneRepository.GetAsync(departureDto.AirplaneId);
 
             var validationResult = validator.Validate(departure);
 
             if (validationResult.IsValid)
             {
-                db.DepartureRepository.Create(departure);
+                await db.DepartureRepository.CreateAsync(departure);
                 db.SaveChangesAsync();
             }
             else
@@ -59,18 +60,18 @@ namespace Airport.BLL.Services
             return mapper.Map<Departure, DepartureDto>(departure);
         }
 
-        public DepartureDto Update(Guid id, DepartureDto departureDto)
+        public async Task<DepartureDto> UpdateAsync(Guid id, DepartureDto departureDto)
         {
             var departure = mapper.Map<DepartureDto, Departure>(departureDto);
             departure.Id = id;
-            departure.Airplane = db.AeroplaneRepository.Get(departureDto.AirplaneId);
-            departure.Crew = db.CrewRepositiry.Get(departureDto.CrewId);
+            departure.Airplane = await db.AeroplaneRepository.GetAsync(departureDto.AirplaneId);
+            departure.Crew = await db.CrewRepositiry.GetAsync(departureDto.CrewId);
 
             var validationResult = validator.Validate(departure);
 
             if (validationResult.IsValid)
             {
-                db.DepartureRepository.Update(departure);
+                await db.DepartureRepository.UpdateAsync(departure);
                 db.SaveChangesAsync();
             }
             else
@@ -81,15 +82,15 @@ namespace Airport.BLL.Services
             return mapper.Map<Departure, DepartureDto>(departure);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.DepartureRepository.Delete(id);
+            await db.DepartureRepository.DeleteAsync(id);
             db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.DepartureRepository.Delete();
+            await db.DepartureRepository.DeleteAsync();
             db.SaveChangesAsync();
         }
     }

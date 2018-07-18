@@ -28,9 +28,10 @@ namespace Airport.BLL.Services
         }
 
 
-        public FlightDto Get(Guid id)
+        public async Task<FlightDto> GetAsync(Guid id)
         {
-            return mapper.Map<Flight, FlightDto>(db.FlightRepository.Get(id));
+            Flight flight = await db.FlightRepository.GetAsync(id);
+            return mapper.Map<Flight, FlightDto>(flight);
         }
 
         public async Task<List<FlightDto>> GetAllAsync()
@@ -39,17 +40,17 @@ namespace Airport.BLL.Services
             return await mapper.Map<Task<List<Flight>>, Task<List<FlightDto>>>(flights);
         }
 
-        public FlightDto Create(FlightDto flightDto)
+        public async Task<FlightDto> CreateAsync(FlightDto flightDto)
         {
             var flight = mapper.Map<FlightDto, Flight>(flightDto);
             flight.Id = Guid.NewGuid();
-            flight.Tickets = db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id)).Result;
+            flight.Tickets = await db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id));
 
             var validationResult = validator.Validate(flight);
 
             if (validationResult.IsValid)
             {
-                db.FlightRepository.Create(flight);
+                await db.FlightRepository.CreateAsync(flight);
                 db.SaveChangesAsync();
             }
             else
@@ -60,17 +61,17 @@ namespace Airport.BLL.Services
             return mapper.Map<Flight, FlightDto>(flight);
         }
 
-        public FlightDto Update(Guid id, FlightDto flightDto)
+        public async Task<FlightDto> UpdateAsync(Guid id, FlightDto flightDto)
         {
             var flight = mapper.Map<FlightDto, Flight>(flightDto);
             flight.Id = id;
-            flight.Tickets = db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id)).Result;
+            flight.Tickets = await db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id));
 
             var validationResult = validator.Validate(flight);
 
             if (validationResult.IsValid)
             {
-                db.FlightRepository.Update(flight);
+                await db.FlightRepository.UpdateAsync(flight);
                 db.SaveChangesAsync();
             }
             else
@@ -81,15 +82,15 @@ namespace Airport.BLL.Services
             return mapper.Map<Flight, FlightDto>(flight);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.FlightRepository.Delete(id);
+            await db.FlightRepository.DeleteAsync(id);
             db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.FlightRepository.Delete();
+            await db.FlightRepository.DeleteAsync();
             db.SaveChangesAsync();
         }
     }

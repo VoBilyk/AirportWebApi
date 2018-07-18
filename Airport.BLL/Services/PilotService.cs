@@ -26,9 +26,10 @@ namespace Airport.BLL.Services
         }
 
 
-        public PilotDto Get(Guid id)
+        public async Task<PilotDto> Get(Guid id)
         {
-            return mapper.Map<Pilot, PilotDto>(db.PilotRepositiry.Get(id));
+            Pilot pilot = await db.PilotRepositiry.GetAsync(id);
+            return mapper.Map<Pilot, PilotDto>(pilot);
         }
 
         public async Task<List<PilotDto>> GetAllAsync()
@@ -37,7 +38,7 @@ namespace Airport.BLL.Services
             return await mapper.Map<Task<List<Pilot>>, Task<List<PilotDto>>>(pilots);
         }
         
-        public PilotDto Create(PilotDto pilotDto)
+        public async Task<PilotDto> CreateAsync(PilotDto pilotDto)
         {
             var pilot = mapper.Map<PilotDto, Pilot>(pilotDto);
             pilot.Id = Guid.NewGuid();
@@ -46,7 +47,7 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.PilotRepositiry.Create(pilot);
+                await db.PilotRepositiry.CreateAsync(pilot);
                 db.SaveChangesAsync();
             }
             else
@@ -57,7 +58,7 @@ namespace Airport.BLL.Services
             return mapper.Map<Pilot, PilotDto>(pilot);
         }
 
-        public PilotDto Update(Guid id, PilotDto pilotDto)
+        public async Task<PilotDto> UpdateAsync(Guid id, PilotDto pilotDto)
         {
             var pilot = mapper.Map<PilotDto, Pilot>(pilotDto);
             pilot.Id = id;
@@ -66,7 +67,7 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.PilotRepositiry.Update(pilot);
+                await db.PilotRepositiry.UpdateAsync(pilot);
                 db.SaveChangesAsync();
             }
             else
@@ -77,15 +78,15 @@ namespace Airport.BLL.Services
             return mapper.Map<Pilot, PilotDto>(pilot);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.PilotRepositiry.Delete(id);
+            await db.PilotRepositiry.DeleteAsync(id);
             db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.PilotRepositiry.Delete();
+            await db.PilotRepositiry.DeleteAsync();
             db.SaveChangesAsync();
         }
     }

@@ -27,9 +27,10 @@ namespace Airport.BLL.Services
         }
 
 
-        public CrewDto Get(Guid id)
+        public async Task<CrewDto> GetAsync(Guid id)
         {
-            return mapper.Map<Crew, CrewDto>(db.CrewRepositiry.Get(id));
+            Crew item = await db.CrewRepositiry.GetAsync(id);
+            return mapper.Map<Crew, CrewDto>(item);
         }
 
         public async Task<List<CrewDto>> GetAllAsync()
@@ -38,19 +39,19 @@ namespace Airport.BLL.Services
             return mapper.Map<List<Crew>, List<CrewDto>>(crews);
         }
 
-        public CrewDto Create(CrewDto crewDto)
+        public async Task<CrewDto> CreateAsync(CrewDto crewDto)
         {
             var crew = mapper.Map<CrewDto, Crew>(crewDto);
 
             crew.Id = Guid.NewGuid();
-            crew.Pilot = db.PilotRepositiry.Get(crewDto.PilotId);
-            crew.Stewardesses = db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id)).Result;
+            crew.Pilot = await db.PilotRepositiry.GetAsync(crewDto.PilotId);
+            crew.Stewardesses = await db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id));
 
             var validationResult = validator.Validate(crew);
 
             if (validationResult.IsValid)
             {
-                db.CrewRepositiry.Create(crew);
+                await db.CrewRepositiry.CreateAsync(crew);
                 db.SaveChangesAsync();
             }
             else
@@ -61,19 +62,19 @@ namespace Airport.BLL.Services
             return mapper.Map<Crew, CrewDto>(crew);
         }
 
-        public CrewDto Update(Guid id, CrewDto crewDto)
+        public async Task<CrewDto> UpdateAsync(Guid id, CrewDto crewDto)
         {
             var crew = mapper.Map<CrewDto, Crew>(crewDto);
 
             crew.Id = id;
-            crew.Pilot = db.PilotRepositiry.Get(crewDto.PilotId);
-            crew.Stewardesses = db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id)).Result;
+            crew.Pilot = await db.PilotRepositiry.GetAsync(crewDto.PilotId);
+            crew.Stewardesses = await db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id));
 
             var validationResult = validator.Validate(crew);
 
             if (validationResult.IsValid)
             {
-                db.CrewRepositiry.Update(crew);
+                await db.CrewRepositiry.UpdateAsync(crew);
                 db.SaveChangesAsync();
             }
             else
@@ -84,15 +85,15 @@ namespace Airport.BLL.Services
             return mapper.Map<Crew, CrewDto>(crew);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.CrewRepositiry.Delete(id);
+            await db.CrewRepositiry.DeleteAsync(id);
             db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.CrewRepositiry.Delete();
+            await db.CrewRepositiry.DeleteAsync();
             db.SaveChangesAsync();
         }
     }
