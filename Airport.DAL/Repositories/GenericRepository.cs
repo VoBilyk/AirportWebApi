@@ -82,10 +82,14 @@ namespace Airport.DAL.Repositories
 
         public virtual async Task DeleteAsync()
         {
-            foreach (var item in dbSet)
+            await Task.Run(() =>
             {
-                dbSet.Remove(item);
+                foreach (var item in dbSet)
+                {
+                    dbSet.Remove(item);
+                }
             }
+            );
         }
     }
 }

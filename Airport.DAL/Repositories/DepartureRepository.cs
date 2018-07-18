@@ -23,7 +23,7 @@ namespace Airport.DAL.Repositories
 
             if (item == null)
             {
-                throw new ArgumentException($"Can`t find item by id:{id}");
+                throw new ArgumentException($"Can`t find item by id: {id}");
             }
 
             return item;
