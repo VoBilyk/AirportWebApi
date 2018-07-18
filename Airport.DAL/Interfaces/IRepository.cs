@@ -16,6 +16,8 @@ namespace Airport.DAL.Interfaces
         
         Task CreateAsync(TEntity item);
 
+        Task CreateRangeAsync(List<TEntity> item);
+        
         Task UpdateAsync(TEntity item);
 
         Task DeleteAsync(Guid id);

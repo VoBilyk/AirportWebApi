@@ -8,6 +8,6 @@ namespace Airport.BLL.Interfaces
 {
     public interface ICrewService : IService<CrewDto>
     {
-        Task<List<CrewDto>> CreateFromAnotherAsync();
+        Task<List<CrewDto>> CreateFromMockApiAsync();
     }
 }

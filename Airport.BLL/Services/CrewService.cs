@@ -101,29 +101,29 @@ namespace Airport.BLL.Services
         }
 
 
-        public async Task<List<CrewDto>> CreateFromAnotherAsync()
+        public async Task<List<CrewDto>> CreateFromMockApiAsync()
         {
-            //HttpResponseMessage response;
+            HttpResponseMessage response;
 
-            //using (var client = new HttpClient())
-            //{
-            //    response = await client.GetAsync(@"http://5b128555d50a5c0014ef1204.mockapi.io/crew");
-            //}
+            using (var client = new HttpClient())
+            {
+                response = await client.GetAsync(@"http://5b128555d50a5c0014ef1204.mockapi.io/crew");
+            }
 
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    throw new InvalidOperationException("Can`t get data from external server");
-            //}
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException("Can`t get data from external server");
+            }
 
-            //string contextResponse = await response.Content.ReadAsStringAsync();
-            //var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(contextResponse).Take(10);
+            string contextResponse = await response.Content.ReadAsStringAsync();
+            var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(contextResponse).Take(10);
 
-            var json = File.ReadAllText(@"D:\\json.txt");
-            var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(json).Take(10);
+            //var json = File.ReadAllText(@"D:\\json.txt");
+            //var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(json).Take(10);
 
             List<Crew> crews = new List<Crew>();
 
-            // Cteating objects
+            // Cteating guids for objects
             foreach (var fullDto in fullCrewsDto)
             {
                 var crew = mapper.Map<FullCrewDto, Crew>(fullDto);
@@ -143,17 +143,11 @@ namespace Airport.BLL.Services
                 crews.Add(crew);
             }
 
-
-            // Writing
-            foreach (var crew in crews)
-            {
-                // Writing to db
-                await db.CrewRepositiry.CreateAsync(crew);
-
-            }
             // Writing to log file
             await LogWriter.WriteCrewsToFileAsync("", crews);
 
+            // Writing to db
+            await db.CrewRepositiry.CreateRangeAsync(crews);
             await db.SaveChangesAsync();
 
             return mapper.Map<List<Crew>, List<CrewDto>>(crews);

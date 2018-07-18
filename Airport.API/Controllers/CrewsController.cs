@@ -80,21 +80,21 @@ namespace Airport.API.Controllers
 
         // PUT api/crews/fromMockApi
         [HttpGet]
-        [Route("fromMockApi")]
+        [Route("mockApi")]
         public async Task<IActionResult> GetFromAnotherSourceAsync()
         {
-            List<CrewDto> resultDto;
+            List<CrewDto> resultDtos;
 
             try
             {
-                resultDto = await crewService.CreateFromAnotherAsync();
+                resultDtos = await crewService.CreateFromMockApiAsync();
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ErrorType = ex.GetType().Name, ex.Message });
             }
 
-            return Ok(resultDto);
+            return Ok(resultDtos);
         }
 
         // PUT api/crews/:id
