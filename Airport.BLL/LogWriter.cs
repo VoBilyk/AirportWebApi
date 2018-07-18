@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Linq;
 using System.Threading.Tasks;
 
 
 namespace Airport.BLL
 {
-    public static class LogWriter
+    public static class LogWritter
     {
         public static async Task WriteCrewsToFileAsync(string filePath, List<Crew> crews)
         {
@@ -17,12 +15,10 @@ namespace Airport.BLL
 
             using (FileStream stream = new FileStream(filePath + fileName, FileMode.Create))
             using (StreamWriter sw = new StreamWriter(stream))
-            {
-                await sw.WriteLineAsync($"CrewId, PilotId");
-                
+            {                
                 foreach (var crew in crews)
                 {
-                    await sw.WriteLineAsync($"{crew.Id}, {crew.Pilot.Id}");
+                    await sw.WriteLineAsync($"CrewId: {crew.Id}, PilotId: {crew.Pilot.Id}, Number of Stewardess: {crew.Stewardesses.Count}");
                 }
             }
         }

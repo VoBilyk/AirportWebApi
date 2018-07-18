@@ -99,8 +99,7 @@ namespace Airport.BLL.Services
             await db.CrewRepositiry.DeleteAsync();
             await db.SaveChangesAsync();
         }
-
-
+        
         public async Task<List<CrewDto>> CreateFromMockApiAsync()
         {
             HttpResponseMessage response;
@@ -117,9 +116,6 @@ namespace Airport.BLL.Services
 
             string contextResponse = await response.Content.ReadAsStringAsync();
             var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(contextResponse).Take(10);
-
-            //var json = File.ReadAllText(@"D:\\json.txt");
-            //var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(json).Take(10);
 
             List<Crew> crews = new List<Crew>();
 
@@ -144,7 +140,7 @@ namespace Airport.BLL.Services
             }
 
             // Writing to log file
-            Task taskFile = LogWriter.WriteCrewsToFileAsync("", crews);
+            Task taskFile = LogWritter.WriteCrewsToFileAsync(@"logs/", crews);
 
             // Writing to db
             Task taskDb = db.CrewRepositiry.CreateRangeAsync(crews);
