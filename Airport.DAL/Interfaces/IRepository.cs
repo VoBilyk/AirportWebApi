@@ -10,16 +10,16 @@ namespace Airport.DAL.Interfaces
     {
         Task<List<TEntity>> GetAllAsync();
 
-        TEntity Get(Guid id);
+        Task<TEntity> GetAsync(Guid id);
 
         Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
         
-        void Create(TEntity item);
+        Task CreateAsync(TEntity item);
 
-        void Update(TEntity item);
+        Task UpdateAsync(TEntity item);
 
-        void Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
-        void Delete();
+        Task DeleteAsync();
     }
 }

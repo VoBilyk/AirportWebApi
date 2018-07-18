@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +17,9 @@ namespace Airport.DAL.Repositories
             return await dbSet.Include(i => i.Crew).Include(i => i.Airplane).ToListAsync();
         }
 
-        public override Departure Get(Guid id)
+        public override async Task<Departure> GetAsync(Guid id)
         {
-            var item = dbSet.Include(i => i.Crew).Include(i => i.Airplane).FirstOrDefault(i => i.Id == id);
+            Departure item = await dbSet.Include(i => i.Crew).Include(i => i.Airplane).SingleOrDefaultAsync(i => i.Id == id);
 
             if (item == null)
             {

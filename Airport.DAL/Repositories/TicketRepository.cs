@@ -18,13 +18,13 @@ namespace Airport.DAL.Repositories
             return await dbSet.Include(i => i.Flight).ToListAsync();
         }
 
-        public override Ticket Get(Guid id)
+        public override async Task<Ticket> GetAsync(Guid id)
         {
-            var item = dbSet.Include(i => i.Flight).FirstOrDefault(i => i.Id == id);
+            var item = await dbSet.Include(i => i.Flight).SingleOrDefaultAsync(i => i.Id == id);
 
             if (item == null)
             {
-                throw new ArgumentException($"Can`t find item by id:{id}");
+                throw new ArgumentException($"Can`t find item by id: {id}");
             }
 
             return item;

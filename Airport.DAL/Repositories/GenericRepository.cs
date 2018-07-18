@@ -20,7 +20,6 @@ namespace Airport.DAL.Repositories
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
-
         }
 
         public async Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
@@ -28,22 +27,13 @@ namespace Airport.DAL.Repositories
             return await dbSet.Where(predicate).ToListAsync();
         }
 
-        public virtual TEntity Get(Guid id)
+        public virtual async Task<TEntity> GetAsync(Guid id)
         {
-            //var item = dbSet.FindAsync(id);
-
-            //if(item == null)
-            //{
-            //    throw new ArgumentException($"Can`t find item by id:{id}");
-            //}
-
-            //return await item;
-
-            var item = dbSet.Find(id);
+            TEntity item = await dbSet.FindAsync(id);
 
             if (item == null)
             {
-                throw new ArgumentException($"Can`t find item by id:{id}");
+                throw new ArgumentException($"Can`t find item by id: {id}");
             }
 
             return item;
@@ -54,9 +44,9 @@ namespace Airport.DAL.Repositories
             return await dbSet.ToListAsync();
         }
 
-        public virtual void Create(TEntity item)
+        public virtual async Task CreateAsync(TEntity item)
         {
-            var foundedItem = dbSet.Find(item.Id);
+            TEntity foundedItem = await dbSet.FindAsync(item.Id);
 
             if (foundedItem != null)
             {
@@ -66,9 +56,9 @@ namespace Airport.DAL.Repositories
             dbSet.Add(item);
         }
 
-        public virtual void Update(TEntity item)
+        public virtual async Task UpdateAsync(TEntity item)
         {
-            var foundedItem = dbSet.Find(item.Id);
+            TEntity foundedItem = await dbSet.FindAsync(item.Id);
 
             if (foundedItem == null)
             {
@@ -78,9 +68,9 @@ namespace Airport.DAL.Repositories
             dbSet.Update(item);
         }
 
-        public virtual void Delete(Guid id)
+        public virtual async Task DeleteAsync(Guid id)
         {
-            var item = dbSet.Find(id);
+            var item = await dbSet.FindAsync(id);
 
             if (item == null)
             {
@@ -90,7 +80,7 @@ namespace Airport.DAL.Repositories
             dbSet.Remove(item);
         }
 
-        public virtual void Delete()
+        public virtual async Task DeleteAsync()
         {
             foreach (var item in dbSet)
             {

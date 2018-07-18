@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -18,13 +17,13 @@ namespace Airport.DAL.Repositories
             return await dbSet.Include(i => i.AeroplaneType).ToListAsync();
         }
 
-        public override Aeroplane Get(Guid id)
+        public override async Task<Aeroplane> GetAsync(Guid id)
         {
-            var item = dbSet.Include(i => i.AeroplaneType).FirstOrDefault(i => i.Id == id);
+            Aeroplane item = await dbSet.Include(i => i.AeroplaneType).SingleOrDefaultAsync(i => i.Id == id);
 
             if (item == null)
             {
-                throw new ArgumentException($"Can`t find item by id:{id}");
+                throw new ArgumentException($"Can`t find item by id: {id}");
             }
 
             return item;
