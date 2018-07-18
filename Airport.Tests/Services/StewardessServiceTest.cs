@@ -49,7 +49,7 @@ namespace Airport.Tests.Services
             var service = new StewardessService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Create(dto);
+            var returnedDto = service.CreateAsync(dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
@@ -69,7 +69,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Create(dto));
+            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Airport.Tests.Services
             var service = new StewardessService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Update(id, dto);
+            var returnedDto = service.UpdateAsync(id, dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id == id);
@@ -109,7 +109,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Update(id, dto));
+            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
         }
     }
 }

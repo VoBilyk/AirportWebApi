@@ -55,13 +55,13 @@ namespace Airport.Tests.Services
                 TicketsId = ticketsId
             };
 
-            A.CallTo(() => unitOfWorkFake.TicketRepository.GetAll())
+            A.CallTo(() => unitOfWorkFake.TicketRepository.GetAllAsync())
                 .Returns(new List<Ticket> { new Ticket { Id = ticketsId[0] } });
 
             var service = new FlightService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Create(dto);
+            var returnedDto = service.CreateAsync(dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
@@ -88,7 +88,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Create(dto));
+            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
         }
 
         [Test]
@@ -112,13 +112,13 @@ namespace Airport.Tests.Services
                 TicketsId = ticketsId
             };
 
-            A.CallTo(() => unitOfWorkFake.TicketRepository.GetAll())
+            A.CallTo(() => unitOfWorkFake.TicketRepository.GetAllAsync())
                 .Returns(new List<Ticket> { new Ticket { Id = ticketsId[0] } });
 
             var service = new FlightService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Update(id, dto);
+            var returnedDto = service.UpdateAsync(id, dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
@@ -146,7 +146,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Update(id, dto));
+            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
         }
     }
 }

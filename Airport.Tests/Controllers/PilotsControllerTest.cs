@@ -19,12 +19,12 @@ namespace Airport.Tests.Controllers
             var id = Guid.NewGuid();
 
             var fakeService = A.Fake<IPilotService>();
-            A.CallTo(() => fakeService.Get(id)).Returns(new PilotDto());
+            A.CallTo(() => fakeService.GetAsync(id)).Returns(new PilotDto());
 
             var controller = new PilotsController(fakeService);
 
             //Act
-            var response = controller.Get(id) as ObjectResult;
+            var response = controller.GetAsync(id).Result as ObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
@@ -45,12 +45,12 @@ namespace Airport.Tests.Controllers
             };
 
             var fakeService = A.Fake<IPilotService>();
-            A.CallTo(() => fakeService.Create(pilot)).Returns(pilot);
+            A.CallTo(() => fakeService.CreateAsync(pilot)).Returns(pilot);
             
             var controller = new PilotsController(fakeService);
 
             //Act
-            var response = controller.Post(pilot) as ObjectResult;
+            var response = controller.PostAsync(pilot).Result as ObjectResult;
             
             //Assert
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
@@ -71,12 +71,12 @@ namespace Airport.Tests.Controllers
             };
 
             var fakeService = A.Fake<IPilotService>();
-            A.CallTo(() => fakeService.Update(pilot.Id, pilot)).Returns(pilot);
+            A.CallTo(() => fakeService.UpdateAsync(pilot.Id, pilot)).Returns(pilot);
 
             var controller = new PilotsController(fakeService);
 
             //Act
-            var response = controller.Post(pilot) as ObjectResult;
+            var response = controller.PostAsync(pilot).Result as ObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
@@ -94,7 +94,7 @@ namespace Airport.Tests.Controllers
             var controller = new PilotsController(fakeService);
 
             //Act
-            var response = controller.Delete(id) as NoContentResult;
+            var response = controller.DeleteAsync(id).Result as NoContentResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.NoContent, response.StatusCode);

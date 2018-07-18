@@ -48,13 +48,13 @@ namespace Airport.Tests.Services
                 Lifetime = new TimeSpan(10,0,0)
             };
 
-            A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.Get(aeroplaneTypeId))
+            A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.GetAsync(aeroplaneTypeId))
                 .Returns(new AeroplaneType { Id = aeroplaneTypeId });
 
             var service = new AeroplaneService(unitOfWorkFake, mapper, alwaysValidValidator);
             
             // Act
-            var returnedDto = service.Create(dto);
+            var returnedDto = service.CreateAsync(dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
@@ -74,7 +74,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Create(dto));
+            Assert.Throws<ValidationException>(() => service.CreateAsync(dto).Wait());
         }
 
         [Test]
@@ -91,13 +91,13 @@ namespace Airport.Tests.Services
                 Lifetime = new TimeSpan(10, 0, 0)
             };
 
-            A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.Get(aeroplaneTypeId))
+            A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.GetAsync(aeroplaneTypeId))
                 .Returns(new AeroplaneType { Id = aeroplaneTypeId });
 
             var service = new AeroplaneService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Update(id, dto);
+            var returnedDto = service.UpdateAsync(id, dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id == id);
@@ -119,7 +119,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Update(id, dto));
+            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
         }
     }
 }

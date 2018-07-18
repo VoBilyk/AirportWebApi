@@ -55,7 +55,7 @@ namespace Airport.Tests.IntegrationTests
             // Arrange
 
             // Act
-            var returnedCount = service.Get(testItem.Id);
+            var returnedCount = service.GetAsync(testItem.Id).Result;
 
             // Assert
             Assert.IsNotNull(returnedCount);
@@ -68,10 +68,10 @@ namespace Airport.Tests.IntegrationTests
             var amountBeforeCreating = db.AeroplaneTypes.Count();
 
             // Act
-            var returnedCount = service.GetAll().Count;
+            var returnedCount = service.GetAllAsync().Result;
 
             // Assert
-            Assert.AreEqual(returnedCount, amountBeforeCreating);
+            Assert.AreEqual(returnedCount.Count, amountBeforeCreating);
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Airport.Tests.IntegrationTests
             var amountBeforeCreating = db.AeroplaneTypes.Count();
 
             // Act
-            service.Create(dto);
+            service.CreateAsync(dto).Wait();
 
             // Assert
             Assert.AreEqual(amountBeforeCreating + 1, db.AeroplaneTypes.Count());
@@ -96,7 +96,7 @@ namespace Airport.Tests.IntegrationTests
             var amountBeforeDeleting = db.AeroplaneTypes.Count();
 
             // Act
-            service.Delete(testItem.Id);
+            service.DeleteAsync(testItem.Id).Wait();
 
             // Assert
             Assert.AreEqual(amountBeforeDeleting - 1, db.AeroplaneTypes.Count());
