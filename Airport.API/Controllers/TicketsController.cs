@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+
 using Airport.BLL.Interfaces;
 using Airport.Shared.DTO;
 
@@ -18,13 +20,13 @@ namespace Airport.API.Controllers
 
         // GET: api/tickets
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
              IEnumerable<TicketDto> ticketDtos;
 
             try
             {
-                ticketDtos = ticketService.GetAll();
+                ticketDtos = await ticketService.GetAllAsync();
             }
             catch (Exception ex)
             {
