@@ -6,7 +6,7 @@ namespace Airport.Shared.DTO
 {
     public class DepartureDto
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Required]
         public DateTime Time { get; set; }

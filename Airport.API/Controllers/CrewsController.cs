@@ -78,6 +78,25 @@ namespace Airport.API.Controllers
             return Ok(resultDto);
         }
 
+        // PUT api/crews/fromMockApi
+        [HttpGet]
+        [Route("fromMockApi")]
+        public async Task<IActionResult> GetFromAnotherSourceAsync()
+        {
+            List<CrewDto> resultDto;
+
+            try
+            {
+                resultDto = await crewService.CreateFromAnotherAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ErrorType = ex.GetType().Name, ex.Message });
+            }
+
+            return Ok(resultDto);
+        }
+
         // PUT api/crews/:id
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(Guid id, [FromBody]CrewDto crewDto)

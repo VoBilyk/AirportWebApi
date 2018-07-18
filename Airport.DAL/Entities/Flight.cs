@@ -25,6 +25,6 @@ namespace Airport.DAL.Entities
         public DateTime DepartureTime { get; set; }
 
         
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

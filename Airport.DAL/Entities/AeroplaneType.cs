@@ -19,6 +19,6 @@ namespace Airport.DAL.Entities
         [Required]
         public int Carrying { get; set; }
 
-        public virtual ICollection<Aeroplane> Aeroplanes { get; set; }
+        public ICollection<Aeroplane> Aeroplanes { get; set; }
     }
 }

@@ -42,7 +42,7 @@ namespace Airport.Tests.Services
             var dto = new StewardessDto()
             {
                 FirstName = "FirstName",
-                SecondName = "SecondName",
+                LastName = "SecondName",
                 BirthDate = new DateTime(1990, 1, 1)
             };
 
@@ -54,7 +54,7 @@ namespace Airport.Tests.Services
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
             Assert.AreEqual(dto.FirstName, returnedDto.FirstName);
-            Assert.AreEqual(dto.SecondName, returnedDto.SecondName);
+            Assert.AreEqual(dto.LastName, returnedDto.LastName);
             Assert.AreEqual(dto.BirthDate, returnedDto.BirthDate);
         }
 
@@ -81,7 +81,7 @@ namespace Airport.Tests.Services
             var dto = new StewardessDto()
             {
                 FirstName = "FirstName",
-                SecondName = "SecondName",
+                LastName = "SecondName",
                 BirthDate = new DateTime(1990, 1, 1)
             };
 
@@ -93,7 +93,7 @@ namespace Airport.Tests.Services
             // Assert
             Assert.True(returnedDto.Id == id);
             Assert.AreEqual(dto.FirstName, returnedDto.FirstName);
-            Assert.AreEqual(dto.SecondName, returnedDto.SecondName);
+            Assert.AreEqual(dto.LastName, returnedDto.LastName);
             Assert.AreEqual(dto.BirthDate, returnedDto.BirthDate);
         }
 

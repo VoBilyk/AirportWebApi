@@ -25,14 +25,14 @@ namespace Airport.DAL
             var pilotFaker = new Faker<Pilot>()
                 .RuleFor(o => o.Id, f => Guid.NewGuid())
                 .RuleFor(o => o.FirstName, f => f.Name.FirstName(Bogus.DataSets.Name.Gender.Male))
-                .RuleFor(o => o.SecondName, f => f.Name.LastName())
+                .RuleFor(o => o.LastName, f => f.Name.LastName())
                 .RuleFor(o => o.BirthDate, f => f.Date.Past(30, new DateTime(1990, 1, 1)).ToUniversalTime())
                 .RuleFor(o => o.Experience, f => f.Random.Number(5, 40));
 
             var stewardessFaker = new Faker<Stewardess>()
                 .RuleFor(o => o.Id, f => Guid.NewGuid())
                 .RuleFor(o => o.FirstName, f => f.Name.FirstName(Bogus.DataSets.Name.Gender.Female))
-                .RuleFor(o => o.SecondName, f => f.Name.LastName())
+                .RuleFor(o => o.LastName, f => f.Name.LastName())
                 .RuleFor(o => o.BirthDate, f => f.Date.Past(20, new DateTime(2000, 1, 1)).ToUniversalTime());
 
             var crewFaker = new Faker<Crew>()

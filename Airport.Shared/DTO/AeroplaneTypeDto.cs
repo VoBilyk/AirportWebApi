@@ -6,7 +6,7 @@ namespace Airport.Shared.DTO
 {
     public class AeroplaneTypeDto
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Required]
         public string Model { get; set; }

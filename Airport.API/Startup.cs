@@ -53,9 +53,9 @@ namespace Airport.API
             services.AddTransient<IValidator<Crew>, CrewValidator>();
             services.AddTransient<IValidator<Departure>, DepartureValidator>();
             services.AddTransient<IValidator<Ticket>, TicketValidator>();
-            
+
             services.AddDbContext<AirportContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("AirportDb"), b => b.MigrationsAssembly("Airport.DAL")),
+               options.UseSqlServer(Configuration.GetConnectionString("AirportDb")),//, b => b.MigrationsAssembly("Airport.DAL")),
                ServiceLifetime.Transient);
         }
 

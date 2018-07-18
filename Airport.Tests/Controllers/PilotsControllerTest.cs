@@ -39,7 +39,7 @@ namespace Airport.Tests.Controllers
             {
                 Id = Guid.NewGuid(),
                 FirstName = "FirstName",
-                SecondName = "SecondName",
+                LastName = "SecondName",
                 Experience = 4,
                 BirthDate = new DateTime(1980, 1, 1)
             };
@@ -65,7 +65,7 @@ namespace Airport.Tests.Controllers
             {
                 Id = Guid.NewGuid(),
                 FirstName = "FirstName",
-                SecondName = "SecondName",
+                LastName = "SecondName",
                 Experience = 4,
                 BirthDate = new DateTime(1980, 1, 1)
             };

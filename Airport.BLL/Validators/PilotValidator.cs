@@ -14,7 +14,7 @@ namespace Airport.BLL.Validators
                 .NotEmpty()
                 .MinimumLength(3);
 
-            RuleFor(x => x.SecondName)
+            RuleFor(x => x.LastName)
                 .NotEmpty()
                 .MinimumLength(3);
 

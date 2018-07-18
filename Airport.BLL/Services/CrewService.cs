@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
 using AutoMapper;
 using FluentValidation;
 
@@ -9,7 +11,8 @@ using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
 using Airport.Shared.DTO;
-
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Airport.BLL.Services
 {
@@ -95,6 +98,65 @@ namespace Airport.BLL.Services
         {
             await db.CrewRepositiry.DeleteAsync();
             await db.SaveChangesAsync();
+        }
+
+
+        public async Task<List<CrewDto>> CreateFromAnotherAsync()
+        {
+            //HttpResponseMessage response;
+
+            //using (var client = new HttpClient())
+            //{
+            //    response = await client.GetAsync(@"http://5b128555d50a5c0014ef1204.mockapi.io/crew");
+            //}
+
+            //if (!response.IsSuccessStatusCode)
+            //{
+            //    throw new InvalidOperationException("Can`t get data from external server");
+            //}
+
+            //string contextResponse = await response.Content.ReadAsStringAsync();
+            //var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(contextResponse).Take(10);
+
+            var json = File.ReadAllText(@"D:\\json.txt");
+            var fullCrewsDto = JsonConvert.DeserializeObject<List<FullCrewDto>>(json).Take(10);
+
+            List<Crew> crews = new List<Crew>();
+
+            // Cteating objects
+            foreach (var fullDto in fullCrewsDto)
+            {
+                var crew = mapper.Map<FullCrewDto, Crew>(fullDto);
+                crew.Id = Guid.NewGuid();
+
+                crew.Pilot = mapper.Map<PilotDto, Pilot>(fullDto.Pilot[0]);
+                crew.Pilot.Id = Guid.NewGuid();
+
+                crew.Stewardesses = new List<Stewardess>();
+                foreach (var stewardessDto in fullDto.Stewardess)
+                {
+                    var stewardess = mapper.Map<StewardessDto, Stewardess>(stewardessDto);
+                    stewardess.Id = Guid.NewGuid();
+                    crew.Stewardesses.Add(stewardess);
+                }
+
+                crews.Add(crew);
+            }
+
+
+            // Writing
+            foreach (var crew in crews)
+            {
+                // Writing to db
+                await db.CrewRepositiry.CreateAsync(crew);
+
+            }
+            // Writing to log file
+            await LogWriter.WriteCrewsToFileAsync("", crews);
+
+            await db.SaveChangesAsync();
+
+            return mapper.Map<List<Crew>, List<CrewDto>>(crews);
         }
     }
 }
