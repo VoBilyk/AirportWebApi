@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="FluentValidation" Version="7.6.104" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Airport.DAL\Airport.DAL.csproj" />
+    <ProjectReference Include="..\Airport.Shared\Airport.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
