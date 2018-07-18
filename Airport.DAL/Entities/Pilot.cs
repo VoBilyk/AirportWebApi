@@ -15,7 +15,7 @@ namespace Airport.DAL.Entities
 
         [Required]
         [MinLength(3, ErrorMessage = "SecondName can`t be less than 3 symbols")]
-        public string SecondName { get; set; }
+        public string LastName { get; set; }
 
         [Required]
         public int Experience { get; set; }

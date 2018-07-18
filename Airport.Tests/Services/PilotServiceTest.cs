@@ -42,7 +42,7 @@ namespace Airport.Tests.Services
             var dto = new PilotDto()
             {
                 FirstName = "FirstName",
-                SecondName = "SecondName",
+                LastName = "SecondName",
                 BirthDate = new DateTime(1980, 1, 1),
                 Experience = 5
             };
@@ -50,12 +50,12 @@ namespace Airport.Tests.Services
             var service = new PilotService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Create(dto);
+            var returnedDto = service.CreateAsync(dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
             Assert.AreEqual(dto.FirstName, returnedDto.FirstName);
-            Assert.AreEqual(dto.SecondName, returnedDto.SecondName);
+            Assert.AreEqual(dto.LastName, returnedDto.LastName);
             Assert.AreEqual(dto.BirthDate, returnedDto.BirthDate);
             Assert.AreEqual(dto.Experience, returnedDto.Experience);
         }
@@ -71,7 +71,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Create(dto));
+            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Airport.Tests.Services
             var dto = new PilotDto()
             {
                 FirstName = "FirstName",
-                SecondName = "SecondName",
+                LastName = "SecondName",
                 BirthDate = new DateTime(1980, 1, 1),
                 Experience = 5
             };
@@ -91,12 +91,12 @@ namespace Airport.Tests.Services
             var service = new PilotService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Update(id, dto);
+            var returnedDto = service.UpdateAsync(id, dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id == id);
             Assert.AreEqual(dto.FirstName, returnedDto.FirstName);
-            Assert.AreEqual(dto.SecondName, returnedDto.SecondName);
+            Assert.AreEqual(dto.LastName, returnedDto.LastName);
             Assert.AreEqual(dto.BirthDate, returnedDto.BirthDate);
             Assert.AreEqual(dto.Experience, returnedDto.Experience);
         }
@@ -113,7 +113,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Update(id, dto));
+            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
         }
     }
 }

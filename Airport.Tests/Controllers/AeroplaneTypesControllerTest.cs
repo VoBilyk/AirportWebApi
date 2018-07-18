@@ -20,12 +20,12 @@ namespace Airport.Tests.Controllers
             var id = Guid.NewGuid();
 
             var fakeService = A.Fake<IAeroplaneTypeService>();
-            A.CallTo(() => fakeService.Get(id)).Returns(new AeroplaneTypeDto());
+            A.CallTo(() => fakeService.GetAsync(id)).Returns(new AeroplaneTypeDto());
 
             var controller = new AeroplaneTypesController(fakeService);
 
             //Act
-            var response = controller.Get(id) as ObjectResult;
+            var response = controller.GetAsync(id).Result as ObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
@@ -45,12 +45,12 @@ namespace Airport.Tests.Controllers
             };
 
             var fakeService = A.Fake<IAeroplaneTypeService>();
-            A.CallTo(() => fakeService.Create(AeroplaneType)).Returns(AeroplaneType);
+            A.CallTo(() => fakeService.CreateAsync(AeroplaneType)).Returns(AeroplaneType);
 
             var controller = new AeroplaneTypesController(fakeService);
 
             //Act
-            var response = controller.Post(AeroplaneType) as ObjectResult;
+            var response = controller.PostAsync(AeroplaneType).Result as ObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
@@ -70,12 +70,12 @@ namespace Airport.Tests.Controllers
             };
 
             var fakeService = A.Fake<IAeroplaneTypeService>();
-            A.CallTo(() => fakeService.Update(AeroplaneType.Id, AeroplaneType)).Returns(AeroplaneType);
+            A.CallTo(() => fakeService.UpdateAsync(AeroplaneType.Id, AeroplaneType)).Returns(AeroplaneType);
 
             var controller = new AeroplaneTypesController(fakeService);
 
             //Act
-            var response = controller.Post(AeroplaneType) as ObjectResult;
+            var response = controller.PostAsync(AeroplaneType).Result as ObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
@@ -93,7 +93,7 @@ namespace Airport.Tests.Controllers
             var controller = new AeroplaneTypesController(fakeService);
 
             //Act
-            var response = controller.Delete(id) as NoContentResult;
+            var response = controller.DeleteAsync(id).Result as NoContentResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.NoContent, response.StatusCode);

@@ -26,48 +26,49 @@ namespace Airport.DAL
         public AirportContext(DbContextOptions<AirportContext> options) : base(options)
         {
             //Database.EnsureDeleted();
-            Database.Migrate();
+            //Database.Migrate();
+            Database.EnsureCreated();
             AirportInitializer.IntializateIfEmpty(this);
         }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Ticket>()
-                .HasOne(x => x.Flight)
-                .WithMany(x => x.Tickets);
+            //modelBuilder.Entity<Ticket>()
+            //    .HasOne(x => x.Flight)
+            //    .WithMany(x => x.Tickets);
 
-            modelBuilder.Entity<Flight>()
-                .HasMany(x => x.Tickets)
-                .WithOne(x => x.Flight);
-
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Pilot)
-                .WithMany(x => x.Crews);
-
-            modelBuilder.Entity<Pilot>()
-                .HasMany(x => x.Crews)
-                .WithOne(x => x.Pilot);
+            //modelBuilder.Entity<Flight>()
+            //    .HasMany(x => x.Tickets)
+            //    .WithOne(x => x.Flight);
 
             modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Pilot)
-                .WithMany(x => x.Crews);
+                .HasMany(x => x.Stewardesses)
+                .WithOne(x => x.Crew);
 
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Pilot)
-                .WithMany(x => x.Crews);
+            ////modelBuilder.Entity<Crew>()
+            ////    .HasOne(x => x.Pilot)
+            ////    .WithMany(x => x.Crews);
 
-            modelBuilder.Entity<Crew>()
-                 .HasMany(x => x.Departures)
-                 .WithOne(x => x.Crew);
+            ////modelBuilder.Entity<Crew>()
+            ////     .HasMany(x => x.Departures)
+            ////     .WithOne(x => x.Crew);
 
-            modelBuilder.Entity<AeroplaneType>()
-                .HasMany(x => x.Aeroplanes)
-                .WithOne(x => x.AeroplaneType);
+            //modelBuilder.Entity<AeroplaneType>()
+            //    .HasMany(x => x.Aeroplanes)
+            //    .WithOne(x => x.AeroplaneType);
 
-            modelBuilder.Entity<Departure>()
-                 .HasOne(x => x.Airplane)
-                 .WithMany(x => x.Departures);
+            //modelBuilder.Entity<Departure>()
+            //     .HasOne(x => x.Airplane)
+            //     .WithMany(x => x.Departures);
+
+            //modelBuilder.Entity<Pilot>()
+            //    .HasMany(x => x.Crews)
+            //    .WithOne(x => x.Pilot);
+
+            //modelBuilder.Entity<Stewardess>()
+            //    .HasOne(x => x.Crew)
+            //    .WithMany(x => x.Stewardesses);
         }
     }
 }

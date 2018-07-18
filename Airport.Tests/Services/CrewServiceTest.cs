@@ -50,15 +50,15 @@ namespace Airport.Tests.Services
                 StewardessesId = stewardessesId
             };
 
-            A.CallTo(() => unitOfWorkFake.PilotRepositiry.Get(pilotId)).Returns(new Pilot { Id = pilotId });
+            A.CallTo(() => unitOfWorkFake.PilotRepositiry.GetAsync(pilotId)).Returns(new Pilot { Id = pilotId });
 
-            A.CallTo(() => unitOfWorkFake.StewardessRepositiry.GetAll())
+            A.CallTo(() => unitOfWorkFake.StewardessRepositiry.GetAllAsync())
                 .Returns(new List<Stewardess> { new Stewardess { Id = stewardessesId[0] } });
 
             var service = new CrewService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Create(dto);
+            var returnedDto = service.CreateAsync(dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
@@ -82,7 +82,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Create(dto));
+            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
         }
 
         [Test]
@@ -99,15 +99,15 @@ namespace Airport.Tests.Services
                 StewardessesId = stewardessesId
             };
 
-            A.CallTo(() => unitOfWorkFake.PilotRepositiry.Get(pilotId)).Returns(new Pilot { Id = pilotId });
+            A.CallTo(() => unitOfWorkFake.PilotRepositiry.GetAsync(pilotId)).Returns(new Pilot { Id = pilotId });
 
-            A.CallTo(() => unitOfWorkFake.StewardessRepositiry.GetAll())
+            A.CallTo(() => unitOfWorkFake.StewardessRepositiry.GetAllAsync())
                 .Returns(new List<Stewardess> { new Stewardess { Id = stewardessesId[0] } });
 
             var service = new CrewService(unitOfWorkFake, mapper, alwaysValidValidator);
 
             // Act
-            var returnedDto = service.Update(id, dto);
+            var returnedDto = service.UpdateAsync(id, dto).Result;
 
             // Assert
             Assert.True(returnedDto.Id != default(Guid));
@@ -132,7 +132,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.Update(id, dto));
+            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
         }
     }
 }

@@ -56,6 +56,12 @@ namespace Airport.DAL.Repositories
             dbSet.Add(item);
         }
 
+        public async Task CreateRangeAsync(List<TEntity> items)
+        {
+            await dbSet.AddRangeAsync(items);
+        }
+
+
         public virtual async Task UpdateAsync(TEntity item)
         {
             TEntity foundedItem = await dbSet.FindAsync(item.Id);

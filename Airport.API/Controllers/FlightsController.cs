@@ -55,6 +55,25 @@ namespace Airport.API.Controllers
             return Ok(flightDto);
         }
 
+        // GET: api/flights/await?delay=:delay
+        [HttpGet]
+        [Route("await")]
+        public async Task<IActionResult> GetAllWithDelayAsync(int delay)
+        {
+            List<FlightDto> flightsDto;
+
+            try
+            {
+                flightsDto = await flightService.GetWithDelayAsync(delay);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ErrorType = ex.GetType().Name, ex.Message });
+            }
+
+            return Ok(flightsDto);
+        }
+
         // POST api/flights
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody]FlightDto flightDto)

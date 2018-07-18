@@ -7,7 +7,7 @@ namespace Airport.Shared.DTO
 {
     public class TicketDto
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Required]
         public decimal Price { get; set; }

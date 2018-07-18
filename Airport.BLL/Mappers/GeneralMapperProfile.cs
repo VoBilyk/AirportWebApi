@@ -2,7 +2,7 @@
 using AutoMapper;
 using Airport.DAL.Entities;
 using Airport.Shared.DTO;
-
+using System.Collections.Generic;
 
 namespace Airport.BLL.Mappers
 {
@@ -13,12 +13,18 @@ namespace Airport.BLL.Mappers
             CreateMap<AeroplaneType, AeroplaneTypeDto>();
             CreateMap<AeroplaneTypeDto, AeroplaneType>();
 
-            CreateMap<Pilot, PilotDto>();
-            CreateMap<PilotDto, Pilot>();
+            CreateMap<Pilot, PilotDto>()
+                .ForMember(dto => dto.CrewsId, model => model.MapFrom(m => m.Crews.Select(s => s.Id.ToString()).ToList()));
+            CreateMap<PilotDto, Pilot>()
+                .ForMember(model => model.Id, dto => dto.Ignore());
+            
+            CreateMap<Stewardess, StewardessDto>()
+                .ForMember(dto => dto.CrewId, model => model.MapFrom(m => m.Crew.Id.ToString()));
 
-            CreateMap<Stewardess, StewardessDto>();
             CreateMap<StewardessDto, Stewardess>()
-                .ForMember(model => model.Crew, dto => dto.Ignore());
+                .ForMember(model => model.Crew, dto => dto.Ignore())
+                .ForMember(model => model.Id, dto => dto.Ignore());
+
 
             CreateMap<AeroplaneDto, Aeroplane>()
                 .ForMember(model => model.AeroplaneType, dto => dto.Ignore())
@@ -29,11 +35,27 @@ namespace Airport.BLL.Mappers
                 .ForMember(dto => dto.Lifetime, model => model.MapFrom(m => m.LifetimeFullForm));
 
             CreateMap<CrewDto, Crew>()
+                .ForMember(model => model.Id, dto => dto.Ignore())
                 .ForMember(model => model.Pilot, dto => dto.Ignore())
                 .ForMember(model => model.Stewardesses, dto => dto.Ignore());
             CreateMap<Crew, CrewDto>()
                 .ForMember(dto => dto.PilotId, model => model.MapFrom(m => m.Pilot.Id))
                 .ForMember(dto => dto.StewardessesId, model => model.MapFrom(m => m.Stewardesses.Select(s => s.Id)));
+
+            CreateMap<FullCrewDto, Crew>()
+                .ForMember(model => model.Id, dto => dto.Ignore())
+                .ForMember(model => model.Pilot, dto => dto.Ignore())
+                .ForMember(model => model.Stewardesses, dto => dto.Ignore());
+
+            //CreateMap<FullCrewDto, Crew>()
+            //    .ForMember(model => model.Pilot, 
+            //    dto => dto.MapFrom(m => Mapper.Map<PilotDto, Pilot>(m.Pilot[0])))
+            //    .ForMember(model => model.Stewardesses, 
+            //    dto => dto.MapFrom(m => Mapper.Map<List<StewardessDto>,List<Stewardess>>(m.Stewardesses.Select(s => s).ToList())));
+
+            //CreateMap<Crew, FullCrewDto>()
+            //    .ForMember(dto => dto.Pilot[0].CrewId, model => model.MapFrom(m => m.Pilot.Id))
+            //    .ForMember(dto => dto.Stewardesses.StewardessesId, model => model.MapFrom(m => m.Stewardesses.Select(s => s.Id)));
 
             CreateMap<DepartureDto, Departure>()
                 .ForMember(model => model.Airplane, dto => dto.Ignore())
