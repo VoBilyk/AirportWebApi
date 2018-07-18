@@ -144,12 +144,14 @@ namespace Airport.BLL.Services
             }
 
             // Writing to log file
-            await LogWriter.WriteCrewsToFileAsync("", crews);
+            Task taskFile = LogWriter.WriteCrewsToFileAsync("", crews);
 
             // Writing to db
-            await db.CrewRepositiry.CreateRangeAsync(crews);
-            await db.SaveChangesAsync();
+            Task taskDb = db.CrewRepositiry.CreateRangeAsync(crews);
 
+            await Task.WhenAll(taskDb, taskFile);
+            await db.SaveChangesAsync();
+            
             return mapper.Map<List<Crew>, List<CrewDto>>(crews);
         }
     }

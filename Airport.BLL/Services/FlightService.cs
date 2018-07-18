@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using AutoMapper;
 using FluentValidation;
 
@@ -92,6 +93,25 @@ namespace Airport.BLL.Services
         {
             await db.FlightRepository.DeleteAsync();
             await db.SaveChangesAsync();
+        }
+
+        public async Task<List<FlightDto>> GetWithDelayAsync(int delay)
+        {
+            var timer = new Timer(delay);
+            var tcs = new TaskCompletionSource<List<FlightDto>>();
+
+            var flights = await db.FlightRepository.GetAllAsync();
+            var flightsDto = mapper.Map<List<Flight>, List<FlightDto>>(flights);
+            
+            timer.Elapsed += (o, e) =>
+            {
+                timer.Dispose();
+                tcs.SetResult(flightsDto);
+            };
+
+            timer.Start();
+
+            return await tcs.Task;
         }
     }
 }
