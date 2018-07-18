@@ -39,13 +39,13 @@ namespace Airport.API.Controllers
 
         // GET: api/departures/:id
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
             DepartureDto departureDto;
 
             try
             {
-                departureDto = departureService.Get(id);
+                departureDto = await departureService.GetAsync(id);
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace Airport.API.Controllers
 
         // POST api/departures
         [HttpPost]
-        public IActionResult Post([FromBody]DepartureDto departureDto)
+        public async Task<IActionResult> PostAsync([FromBody]DepartureDto departureDto)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace Airport.API.Controllers
 
             try
             {
-                resultDto = departureService.Create(departureDto);
+                resultDto = await departureService.CreateAsync(departureDto);
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace Airport.API.Controllers
 
         // PUT api/departures/:id
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody]DepartureDto departureDto)
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody]DepartureDto departureDto)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Airport.API.Controllers
 
             try
             {
-                resultDto = departureService.Update(id, departureDto);
+                resultDto = await departureService.UpdateAsync(id, departureDto);
             }
             catch (Exception ex)
             {
@@ -103,11 +103,11 @@ namespace Airport.API.Controllers
 
         // DELETE api/departures
         [HttpDelete]
-        public IActionResult Delete()
+        public async Task<IActionResult> DeleteAsync()
         {
             try
             {
-                departureService.DeleteAll();
+                await departureService.DeleteAllAsync();
             }
             catch (Exception ex)
             {
@@ -119,11 +119,11 @@ namespace Airport.API.Controllers
 
         // DELETE api/departures/:id
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
             {
-                departureService.Delete(id);
+                await departureService.DeleteAsync(id);
             }
             catch (Exception ex)
             {
