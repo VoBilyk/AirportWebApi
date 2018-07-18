@@ -44,7 +44,7 @@ namespace Airport.BLL.Services
 
             crew.Id = Guid.NewGuid();
             crew.Pilot = db.PilotRepositiry.Get(crewDto.PilotId);
-            crew.Stewardesses = db.StewardessRepositiry.GetAll().Where(i => crewDto.StewardessesId.Contains(i.Id)).ToList();
+            crew.Stewardesses = db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id)).Result;
 
             var validationResult = validator.Validate(crew);
 
@@ -67,7 +67,7 @@ namespace Airport.BLL.Services
 
             crew.Id = id;
             crew.Pilot = db.PilotRepositiry.Get(crewDto.PilotId);
-            crew.Stewardesses = db.StewardessRepositiry.GetAll().Where(i => crewDto.StewardessesId.Contains(i.Id)).ToList();
+            crew.Stewardesses = db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id)).Result;
 
             var validationResult = validator.Validate(crew);
 

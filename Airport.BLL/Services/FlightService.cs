@@ -43,7 +43,7 @@ namespace Airport.BLL.Services
         {
             var flight = mapper.Map<FlightDto, Flight>(flightDto);
             flight.Id = Guid.NewGuid();
-            flight.Tickets = db.TicketRepository.GetAll().Where(i => flightDto.TicketsId.Contains(i.Id)).ToList();
+            flight.Tickets = db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id)).Result;
 
             var validationResult = validator.Validate(flight);
 
@@ -64,7 +64,7 @@ namespace Airport.BLL.Services
         {
             var flight = mapper.Map<FlightDto, Flight>(flightDto);
             flight.Id = id;
-            flight.Tickets = db.TicketRepository.GetAll().Where(i => flightDto.TicketsId.Contains(i.Id)).ToList();
+            flight.Tickets = db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id)).Result;
 
             var validationResult = validator.Validate(flight);
 

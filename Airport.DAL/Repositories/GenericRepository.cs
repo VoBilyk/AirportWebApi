@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +23,9 @@ namespace Airport.DAL.Repositories
 
         }
 
-        public Task<List<TEntity>> FindAsync(Func<TEntity, bool> predicate)
+        public async Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await dbSet.ToListAsync();
+            return await dbSet.Where(predicate).ToListAsync();
         }
 
         public virtual TEntity Get(Guid id)

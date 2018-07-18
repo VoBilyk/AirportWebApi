@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 
 namespace Airport.DAL.Interfaces
 {
@@ -10,7 +12,7 @@ namespace Airport.DAL.Interfaces
 
         TEntity Get(Guid id);
 
-        Task<List<TEntity>> FindAsync(Func<TEntity, bool> predicate);
+        Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
         
         void Create(TEntity item);
 
