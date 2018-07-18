@@ -1,5 +1,6 @@
 ﻿using Airport.DAL.Entities;
 
+
 namespace Airport.DAL.Repositories
 {
     public class PilotRepository : GenericRepository<Pilot>

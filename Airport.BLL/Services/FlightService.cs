@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
@@ -26,28 +28,30 @@ namespace Airport.BLL.Services
         }
 
 
-        public FlightDto Get(Guid id)
+        public async Task<FlightDto> GetAsync(Guid id)
         {
-            return mapper.Map<Flight, FlightDto>(db.FlightRepository.Get(id));
+            Flight flight = await db.FlightRepository.GetAsync(id);
+            return mapper.Map<Flight, FlightDto>(flight);
         }
 
-        public List<FlightDto> GetAll()
+        public async Task<List<FlightDto>> GetAllAsync()
         {
-            return mapper.Map<List<Flight>, List<FlightDto>>(db.FlightRepository.GetAll());
+            var flights = db.FlightRepository.GetAllAsync();
+            return await mapper.Map<Task<List<Flight>>, Task<List<FlightDto>>>(flights);
         }
 
-        public FlightDto Create(FlightDto flightDto)
+        public async Task<FlightDto> CreateAsync(FlightDto flightDto)
         {
             var flight = mapper.Map<FlightDto, Flight>(flightDto);
             flight.Id = Guid.NewGuid();
-            flight.Tickets = db.TicketRepository.GetAll().Where(i => flightDto.TicketsId.Contains(i.Id)).ToList();
+            flight.Tickets = await db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id));
 
             var validationResult = validator.Validate(flight);
 
             if (validationResult.IsValid)
             {
-                db.FlightRepository.Create(flight);
-                db.SaveChanges();
+                await db.FlightRepository.CreateAsync(flight);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -57,18 +61,18 @@ namespace Airport.BLL.Services
             return mapper.Map<Flight, FlightDto>(flight);
         }
 
-        public FlightDto Update(Guid id, FlightDto flightDto)
+        public async Task<FlightDto> UpdateAsync(Guid id, FlightDto flightDto)
         {
             var flight = mapper.Map<FlightDto, Flight>(flightDto);
             flight.Id = id;
-            flight.Tickets = db.TicketRepository.GetAll().Where(i => flightDto.TicketsId.Contains(i.Id)).ToList();
+            flight.Tickets = await db.TicketRepository.FindAsync(i => flightDto.TicketsId.Contains(i.Id));
 
             var validationResult = validator.Validate(flight);
 
             if (validationResult.IsValid)
             {
-                db.FlightRepository.Update(flight);
-                db.SaveChanges();
+                await db.FlightRepository.UpdateAsync(flight);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -78,16 +82,16 @@ namespace Airport.BLL.Services
             return mapper.Map<Flight, FlightDto>(flight);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.FlightRepository.Delete(id);
-            db.SaveChanges();
+            await db.FlightRepository.DeleteAsync(id);
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.FlightRepository.Delete();
-            db.SaveChanges();
+            await db.FlightRepository.DeleteAsync();
+            await db.SaveChangesAsync();
         }
     }
 }

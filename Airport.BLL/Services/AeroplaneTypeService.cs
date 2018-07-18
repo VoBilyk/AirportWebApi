@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using Airport.BLL.Interfaces;
@@ -24,17 +25,19 @@ namespace Airport.BLL.Services
         }
 
 
-        public AeroplaneTypeDto Get(Guid id)
+        public async Task<AeroplaneTypeDto> GetAsync(Guid id)
         {
-            return mapper.Map<AeroplaneType, AeroplaneTypeDto>(db.AeroplaneTypeRepository.Get(id));
+            AeroplaneType item = await db.AeroplaneTypeRepository.GetAsync(id);
+            return mapper.Map<AeroplaneType, AeroplaneTypeDto>(item);
         }
 
-        public List<AeroplaneTypeDto> GetAll()
+        public async Task<List<AeroplaneTypeDto>> GetAllAsync()
         {
-            return mapper.Map<List<AeroplaneType>, List<AeroplaneTypeDto>>(db.AeroplaneTypeRepository.GetAll());
+            var aeroplaneTypes = db.AeroplaneTypeRepository.GetAllAsync();
+            return await mapper.Map<Task<List<AeroplaneType>>, Task<List<AeroplaneTypeDto>>>(aeroplaneTypes);
         }
 
-        public AeroplaneTypeDto Create(AeroplaneTypeDto aeroplaneTypeDto)
+        public async Task<AeroplaneTypeDto> CreateAsync(AeroplaneTypeDto aeroplaneTypeDto)
         {
             var aeroplaneType = mapper.Map<AeroplaneTypeDto, AeroplaneType>(aeroplaneTypeDto);
             aeroplaneType.Id = Guid.NewGuid();
@@ -43,8 +46,8 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.AeroplaneTypeRepository.Create(aeroplaneType);
-                db.SaveChanges();
+                await db.AeroplaneTypeRepository.CreateAsync(aeroplaneType);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -54,7 +57,7 @@ namespace Airport.BLL.Services
             return mapper.Map<AeroplaneType, AeroplaneTypeDto>(aeroplaneType);
         }
 
-        public AeroplaneTypeDto Update(Guid id, AeroplaneTypeDto aeroplaneTypeDto)
+        public async Task<AeroplaneTypeDto> UpdateAsync(Guid id, AeroplaneTypeDto aeroplaneTypeDto)
         {
             var aeroplaneType = mapper.Map<AeroplaneTypeDto, AeroplaneType>(aeroplaneTypeDto);
             aeroplaneType.Id = id;
@@ -63,8 +66,8 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.AeroplaneTypeRepository.Update(aeroplaneType);
-                db.SaveChanges();
+                await db.AeroplaneTypeRepository.UpdateAsync(aeroplaneType);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -74,16 +77,16 @@ namespace Airport.BLL.Services
             return mapper.Map<AeroplaneType, AeroplaneTypeDto>(aeroplaneType);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.AeroplaneTypeRepository.Delete(id);
-            db.SaveChanges();
+            await db.AeroplaneTypeRepository.DeleteAsync(id);
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.AeroplaneTypeRepository.Delete();
-            db.SaveChanges();
+            await db.AeroplaneTypeRepository.DeleteAsync();
+            await db.SaveChangesAsync();
         }
     }
 }

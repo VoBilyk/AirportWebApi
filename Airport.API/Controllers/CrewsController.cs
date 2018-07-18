@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+
 using Airport.BLL.Interfaces;
 using Airport.Shared.DTO;
 
@@ -19,13 +21,13 @@ namespace Airport.API.Controllers
 
         // GET: api/crews
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
             IEnumerable<CrewDto> crewDtos;
 
             try
             {
-                crewDtos = crewService.GetAll();
+                crewDtos = await crewService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -37,13 +39,13 @@ namespace Airport.API.Controllers
 
         // GET: api/crews/:id
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
             CrewDto crewDto;
 
             try
             {
-                crewDto = crewService.Get(id);
+                crewDto = await crewService.GetAsync(id);
             }
             catch (Exception ex)
             {
@@ -55,7 +57,7 @@ namespace Airport.API.Controllers
 
         // POST api/crews
         [HttpPost]
-        public IActionResult Post([FromBody]CrewDto crewDto)
+        public async Task<IActionResult> PostAsync([FromBody]CrewDto crewDto)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +68,7 @@ namespace Airport.API.Controllers
 
             try
             {
-                resultDto = crewService.Create(crewDto);
+                resultDto = await crewService.CreateAsync(crewDto);
             }
             catch (Exception ex)
             {
@@ -78,7 +80,7 @@ namespace Airport.API.Controllers
 
         // PUT api/crews/:id
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody]CrewDto crewDto)
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody]CrewDto crewDto)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +91,7 @@ namespace Airport.API.Controllers
 
             try
             {
-                resultDto = crewService.Update(id, crewDto);
+                resultDto = await crewService.UpdateAsync(id, crewDto);
             }
             catch (Exception ex)
             {
@@ -101,11 +103,11 @@ namespace Airport.API.Controllers
 
         // DELETE api/crews
         [HttpDelete]
-        public IActionResult Delete()
+        public async Task<IActionResult> DeleteAsync()
         {
             try
             {
-                crewService.DeleteAll();
+                await crewService.DeleteAllAsync();
             }
             catch (Exception ex)
             {
@@ -117,11 +119,11 @@ namespace Airport.API.Controllers
 
         // DELETE api/crews/:id
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
             {
-                crewService.Delete(id);
+                await crewService.DeleteAsync(id);
             }
             catch (Exception ex)
             {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
@@ -24,17 +26,19 @@ namespace Airport.BLL.Services
         }
 
 
-        public StewardessDto Get(Guid id)
+        public async Task<StewardessDto> GetAsync(Guid id)
         {
-            return mapper.Map<Stewardess, StewardessDto>(db.StewardessRepositiry.Get(id));
+            Stewardess stewardess = await db.StewardessRepositiry.GetAsync(id);
+            return mapper.Map<Stewardess, StewardessDto>(stewardess);
         }
 
-        public List<StewardessDto> GetAll()
+        public async Task<List<StewardessDto>> GetAllAsync()
         {
-            return mapper.Map<List<Stewardess>, List<StewardessDto>>(db.StewardessRepositiry.GetAll());
+            var stewardesses = db.StewardessRepositiry.GetAllAsync();
+            return await mapper.Map<Task<List<Stewardess>>, Task<List<StewardessDto>>>(stewardesses);
         }
 
-        public StewardessDto Create(StewardessDto stewardessDto)
+        public async Task<StewardessDto> CreateAsync(StewardessDto stewardessDto)
         {
             var stewardess = mapper.Map<StewardessDto, Stewardess>(stewardessDto);
             stewardess.Id = Guid.NewGuid();
@@ -43,8 +47,8 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.StewardessRepositiry.Create(stewardess);
-                db.SaveChanges();
+                await db.StewardessRepositiry.CreateAsync(stewardess);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -54,7 +58,7 @@ namespace Airport.BLL.Services
             return mapper.Map<Stewardess, StewardessDto>(stewardess);
         }
 
-        public StewardessDto Update(Guid id, StewardessDto stewardessDto)
+        public async Task<StewardessDto> UpdateAsync(Guid id, StewardessDto stewardessDto)
         {
             var stewardess = mapper.Map<StewardessDto, Stewardess>(stewardessDto);
             stewardess.Id = id;
@@ -63,8 +67,8 @@ namespace Airport.BLL.Services
             
             if (validationResult.IsValid)
             {
-                db.StewardessRepositiry.Update(stewardess);
-                db.SaveChanges();
+                await db.StewardessRepositiry.UpdateAsync(stewardess);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -74,16 +78,16 @@ namespace Airport.BLL.Services
             return mapper.Map<Stewardess, StewardessDto>(stewardess);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.StewardessRepositiry.Delete(id);
-            db.SaveChanges();
+            await db.StewardessRepositiry.DeleteAsync(id);
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.StewardessRepositiry.Delete();
-            db.SaveChanges();
+            await db.StewardessRepositiry.DeleteAsync();
+            await db.SaveChangesAsync();
         }
     }
 }

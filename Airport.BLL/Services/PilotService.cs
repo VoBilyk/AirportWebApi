@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
@@ -24,17 +26,19 @@ namespace Airport.BLL.Services
         }
 
 
-        public PilotDto Get(Guid id)
+        public async Task<PilotDto> GetAsync(Guid id)
         {
-            return mapper.Map<Pilot, PilotDto>(db.PilotRepositiry.Get(id));
+            Pilot pilot = await db.PilotRepositiry.GetAsync(id);
+            return mapper.Map<Pilot, PilotDto>(pilot);
         }
 
-        public List<PilotDto> GetAll()
+        public async Task<List<PilotDto>> GetAllAsync()
         {
-            return mapper.Map<List<Pilot>, List<PilotDto>>(db.PilotRepositiry.GetAll());
+            var pilots = db.PilotRepositiry.GetAllAsync();
+            return await mapper.Map<Task<List<Pilot>>, Task<List<PilotDto>>>(pilots);
         }
-
-        public PilotDto Create(PilotDto pilotDto)
+        
+        public async Task<PilotDto> CreateAsync(PilotDto pilotDto)
         {
             var pilot = mapper.Map<PilotDto, Pilot>(pilotDto);
             pilot.Id = Guid.NewGuid();
@@ -43,8 +47,8 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.PilotRepositiry.Create(pilot);
-                db.SaveChanges();
+                await db.PilotRepositiry.CreateAsync(pilot);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -54,7 +58,7 @@ namespace Airport.BLL.Services
             return mapper.Map<Pilot, PilotDto>(pilot);
         }
 
-        public PilotDto Update(Guid id, PilotDto pilotDto)
+        public async Task<PilotDto> UpdateAsync(Guid id, PilotDto pilotDto)
         {
             var pilot = mapper.Map<PilotDto, Pilot>(pilotDto);
             pilot.Id = id;
@@ -63,8 +67,8 @@ namespace Airport.BLL.Services
 
             if (validationResult.IsValid)
             {
-                db.PilotRepositiry.Update(pilot);
-                db.SaveChanges();
+                await db.PilotRepositiry.UpdateAsync(pilot);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -74,16 +78,16 @@ namespace Airport.BLL.Services
             return mapper.Map<Pilot, PilotDto>(pilot);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.PilotRepositiry.Delete(id);
-            db.SaveChanges();
+            await db.PilotRepositiry.DeleteAsync(id);
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.PilotRepositiry.Delete();
-            db.SaveChanges();
+            await db.PilotRepositiry.DeleteAsync();
+            await db.SaveChangesAsync();
         }
     }
 }

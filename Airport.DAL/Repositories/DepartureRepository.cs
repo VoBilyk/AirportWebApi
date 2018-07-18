@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 using Airport.DAL.Entities;
+
 
 namespace Airport.DAL.Repositories
 {
@@ -10,18 +12,18 @@ namespace Airport.DAL.Repositories
     {
         public DepartureRepository(AirportContext contex) : base(contex) { }
 
-        public override List<Departure> GetAll()
+        public override async Task<List<Departure>> GetAllAsync()
         {
-            return dbSet.Include(i => i.Crew).Include(i => i.Airplane).ToList();
+            return await dbSet.Include(i => i.Crew).Include(i => i.Airplane).ToListAsync();
         }
 
-        public override Departure Get(Guid id)
+        public override async Task<Departure> GetAsync(Guid id)
         {
-            var item = dbSet.Include(i => i.Crew).Include(i => i.Airplane).FirstOrDefault(i => i.Id == id);
+            Departure item = await dbSet.Include(i => i.Crew).Include(i => i.Airplane).SingleOrDefaultAsync(i => i.Id == id);
 
             if (item == null)
             {
-                throw new ArgumentException($"Can`t find item by id:{id}");
+                throw new ArgumentException($"Can`t find item by id: {id}");
             }
 
             return item;

@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 
 namespace Airport.BLL.Interfaces
 {
     public interface IService<TDto>
     {
-        TDto Get(Guid id);
+        Task<TDto> GetAsync(Guid id);
 
-        List<TDto> GetAll();
+        Task<List<TDto>> GetAllAsync();
 
-        TDto Create(TDto dto);
+        Task<TDto> CreateAsync(TDto dto);
 
-        TDto Update(Guid id, TDto dto);
+        Task<TDto> UpdateAsync(Guid id, TDto dto);
 
-        void Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
-        void DeleteAll();
+        Task DeleteAllAsync();
     }
 }

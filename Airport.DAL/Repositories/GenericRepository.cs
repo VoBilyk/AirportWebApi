@@ -1,8 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 using Airport.DAL.Interfaces;
+
 
 namespace Airport.DAL.Repositories
 {
@@ -16,30 +20,33 @@ namespace Airport.DAL.Repositories
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
-
         }
 
-
-        public virtual TEntity Get(Guid id)
+        public async Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            var item = dbSet.Find(id);
+            return await dbSet.Where(predicate).ToListAsync();
+        }
 
-            if(item == null)
+        public virtual async Task<TEntity> GetAsync(Guid id)
+        {
+            TEntity item = await dbSet.FindAsync(id);
+
+            if (item == null)
             {
-                throw new ArgumentException($"Can`t find item by id:{id}");
+                throw new ArgumentException($"Can`t find item by id: {id}");
             }
 
             return item;
         }
 
-        public virtual List<TEntity> GetAll()
+        public virtual async Task<List<TEntity>> GetAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public virtual void Create(TEntity item)
+        public virtual async Task CreateAsync(TEntity item)
         {
-            var foundedItem = dbSet.Find(item.Id);
+            TEntity foundedItem = await dbSet.FindAsync(item.Id);
 
             if (foundedItem != null)
             {
@@ -49,9 +56,9 @@ namespace Airport.DAL.Repositories
             dbSet.Add(item);
         }
 
-        public virtual void Update(TEntity item)
+        public virtual async Task UpdateAsync(TEntity item)
         {
-            var foundedItem = dbSet.Find(item.Id);
+            TEntity foundedItem = await dbSet.FindAsync(item.Id);
 
             if (foundedItem == null)
             {
@@ -61,9 +68,9 @@ namespace Airport.DAL.Repositories
             dbSet.Update(item);
         }
 
-        public virtual void Delete(Guid id)
+        public virtual async Task DeleteAsync(Guid id)
         {
-            var item = dbSet.Find(id);
+            var item = await dbSet.FindAsync(id);
 
             if (item == null)
             {
@@ -73,12 +80,16 @@ namespace Airport.DAL.Repositories
             dbSet.Remove(item);
         }
 
-        public virtual void Delete()
+        public virtual async Task DeleteAsync()
         {
-            foreach (var item in dbSet)
+            await Task.Run(() =>
             {
-                dbSet.Remove(item);
+                foreach (var item in dbSet)
+                {
+                    dbSet.Remove(item);
+                }
             }
+            );
         }
     }
 }

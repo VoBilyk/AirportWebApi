@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
@@ -25,30 +27,32 @@ namespace Airport.BLL.Services
         }
 
 
-        public CrewDto Get(Guid id)
+        public async Task<CrewDto> GetAsync(Guid id)
         {
-            return mapper.Map<Crew, CrewDto>(db.CrewRepositiry.Get(id));
+            Crew item = await db.CrewRepositiry.GetAsync(id);
+            return mapper.Map<Crew, CrewDto>(item);
         }
 
-        public List<CrewDto> GetAll()
+        public async Task<List<CrewDto>> GetAllAsync()
         {
-            return mapper.Map<List<Crew>, List<CrewDto>>(db.CrewRepositiry.GetAll());
+            List<Crew> crews = await db.CrewRepositiry.GetAllAsync();
+            return mapper.Map<List<Crew>, List<CrewDto>>(crews);
         }
 
-        public CrewDto Create(CrewDto crewDto)
+        public async Task<CrewDto> CreateAsync(CrewDto crewDto)
         {
             var crew = mapper.Map<CrewDto, Crew>(crewDto);
 
             crew.Id = Guid.NewGuid();
-            crew.Pilot = db.PilotRepositiry.Get(crewDto.PilotId);
-            crew.Stewardesses = db.StewardessRepositiry.GetAll().Where(i => crewDto.StewardessesId.Contains(i.Id)).ToList();
+            crew.Pilot = await db.PilotRepositiry.GetAsync(crewDto.PilotId);
+            crew.Stewardesses = await db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id));
 
             var validationResult = validator.Validate(crew);
 
             if (validationResult.IsValid)
             {
-                db.CrewRepositiry.Create(crew);
-                db.SaveChanges();
+                await db.CrewRepositiry.CreateAsync(crew);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -58,20 +62,20 @@ namespace Airport.BLL.Services
             return mapper.Map<Crew, CrewDto>(crew);
         }
 
-        public CrewDto Update(Guid id, CrewDto crewDto)
+        public async Task<CrewDto> UpdateAsync(Guid id, CrewDto crewDto)
         {
             var crew = mapper.Map<CrewDto, Crew>(crewDto);
 
             crew.Id = id;
-            crew.Pilot = db.PilotRepositiry.Get(crewDto.PilotId);
-            crew.Stewardesses = db.StewardessRepositiry.GetAll().Where(i => crewDto.StewardessesId.Contains(i.Id)).ToList();
+            crew.Pilot = await db.PilotRepositiry.GetAsync(crewDto.PilotId);
+            crew.Stewardesses = await db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id));
 
             var validationResult = validator.Validate(crew);
 
             if (validationResult.IsValid)
             {
-                db.CrewRepositiry.Update(crew);
-                db.SaveChanges();
+                await db.CrewRepositiry.UpdateAsync(crew);
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -81,16 +85,16 @@ namespace Airport.BLL.Services
             return mapper.Map<Crew, CrewDto>(crew);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            db.CrewRepositiry.Delete(id);
-            db.SaveChanges();
+            await db.CrewRepositiry.DeleteAsync(id);
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteAll()
+        public async Task DeleteAllAsync()
         {
-            db.CrewRepositiry.Delete();
-            db.SaveChanges();
+            await db.CrewRepositiry.DeleteAsync();
+            await db.SaveChangesAsync();
         }
     }
 }

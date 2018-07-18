@@ -1,6 +1,9 @@
-﻿using Airport.DAL.Interfaces;
+﻿using System.Threading.Tasks;
+
+using Airport.DAL.Interfaces;
 using Airport.DAL.Repositories;
 using Airport.DAL.Entities;
+
 
 namespace Airport.DAL
 {
@@ -119,9 +122,9 @@ namespace Airport.DAL
             }
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

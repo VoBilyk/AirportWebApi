@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+
 using Airport.BLL.Interfaces;
 using Airport.Shared.DTO;
 
@@ -19,13 +21,13 @@ namespace Airport.API.Controllers
 
         // GET: api/aeroplanes
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
             IEnumerable<AeroplaneDto> aeroplaneDtos;
 
             try
             {
-                aeroplaneDtos = aeroplaneService.GetAll();
+                aeroplaneDtos = await aeroplaneService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -37,13 +39,13 @@ namespace Airport.API.Controllers
 
         // GET: api/aeroplanes/:id
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
             AeroplaneDto aeroplaneDto;
 
             try
             {
-                aeroplaneDto = aeroplaneService.Get(id);
+                aeroplaneDto = await aeroplaneService.GetAsync(id);
             }
             catch (Exception ex)
             {
@@ -55,7 +57,7 @@ namespace Airport.API.Controllers
 
         // POST api/aeroplanes
         [HttpPost]
-        public IActionResult Post([FromBody]AeroplaneDto aeroplaneDto)
+        public async Task<IActionResult> PostAsync([FromBody]AeroplaneDto aeroplaneDto)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +68,7 @@ namespace Airport.API.Controllers
 
             try
             {
-                resultDto = aeroplaneService.Create(aeroplaneDto);
+                resultDto = await aeroplaneService.CreateAsync(aeroplaneDto);
             }
             catch (Exception ex)
             {
@@ -78,7 +80,7 @@ namespace Airport.API.Controllers
 
         // PUT api/aeroplanes/:id
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody]AeroplaneDto aeroplaneDto)
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody]AeroplaneDto aeroplaneDto)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +91,7 @@ namespace Airport.API.Controllers
 
             try
             {
-                resultDto = aeroplaneService.Update(id, aeroplaneDto);
+                resultDto = await aeroplaneService.UpdateAsync(id, aeroplaneDto);
             }
             catch (Exception ex)
             {
@@ -101,11 +103,11 @@ namespace Airport.API.Controllers
 
         // DELETE api/aeroplanes
         [HttpDelete]
-        public IActionResult Delete()
+        public async Task<IActionResult> DeleteAsync()
         {
             try
             {
-                aeroplaneService.DeleteAll();
+                await aeroplaneService.DeleteAllAsync();
             }
             catch (Exception ex)
             {
@@ -117,11 +119,11 @@ namespace Airport.API.Controllers
 
         // DELETE api/aeroplanes/:id
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
             {
-                aeroplaneService.Delete(id);
+                await aeroplaneService.DeleteAsync(id);
             }
             catch (Exception ex)
             {
