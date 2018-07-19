@@ -80,7 +80,7 @@ namespace Airport.DAL.Repositories
 
             if (item == null)
             {
-                throw new ArgumentException($"Item id: {item.Id}, don`t exist");
+                throw new ArgumentException($"Item id: {id}, don`t exist");
             }
             
             dbSet.Remove(item);

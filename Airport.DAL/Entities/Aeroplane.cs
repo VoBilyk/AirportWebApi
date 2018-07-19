@@ -14,13 +14,14 @@ namespace Airport.DAL.Entities
         [MinLength(3, ErrorMessage = "Aeroplane name must be not less than 3 symbols")]
         public string Name { get; set; }
 
-        [Required]
+        public Guid AeroplaneTypeId { get; set; }
+
         public AeroplaneType AeroplaneType { get; set; }
 
         [Required]
         public double LifeTimeHourses { get; set; }
 
-        public virtual ICollection<Departure> Departures { get; set; }
+        public ICollection<Departure> Departures { get; set; }
 
         [NotMapped]
         private TimeSpan LifetimeTimeSpan;

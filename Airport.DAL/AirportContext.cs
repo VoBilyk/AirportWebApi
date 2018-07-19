@@ -25,7 +25,7 @@ namespace Airport.DAL
 
         public AirportContext(DbContextOptions<AirportContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             //Database.Migrate();
             Database.EnsureCreated();
             AirportInitializer.IntializateIfEmpty(this);
@@ -34,6 +34,8 @@ namespace Airport.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             //modelBuilder.Entity<Ticket>()
             //    .HasOne(x => x.Flight)
             //    .WithMany(x => x.Tickets);
@@ -42,9 +44,9 @@ namespace Airport.DAL
             //    .HasMany(x => x.Tickets)
             //    .WithOne(x => x.Flight);
 
-            modelBuilder.Entity<Crew>()
-                .HasMany(x => x.Stewardesses)
-                .WithOne(x => x.Crew);
+            //modelBuilder.Entity<Crew>()
+            //    .HasMany(x => x.Stewardesses)
+            //    .WithOne(x => x.Crew);
 
             ////modelBuilder.Entity<Crew>()
             ////    .HasOne(x => x.Pilot)

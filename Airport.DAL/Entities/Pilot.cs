@@ -23,6 +23,6 @@ namespace Airport.DAL.Entities
         [Required]
         public DateTime BirthDate { get; set; }
 
-        public virtual ICollection<Crew> Crews  { get; set; }
+        public ICollection<Crew> Crews  { get; set; }
     }
 }
