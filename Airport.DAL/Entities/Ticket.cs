@@ -11,7 +11,8 @@ namespace Airport.DAL.Entities
         [Required]
         public decimal Price { get; set; }
 
-        [Required]
+        public Guid FlightId { get; set; }
+
         public Flight Flight { get; set; }
     }
 }

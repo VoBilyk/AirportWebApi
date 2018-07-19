@@ -10,9 +10,13 @@ namespace Airport.DAL.Entities
 
         [Required]
         public DateTime Time { get; set; }
-        
+
+        public Guid CrewId { get; set; }
+
         public Crew Crew { get; set; }
-                
+
+        public Guid AirplaneId { get; set; }
+
         public Aeroplane Airplane { get; set; }
     }
 }

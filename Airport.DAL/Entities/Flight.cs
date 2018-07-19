@@ -23,8 +23,7 @@ namespace Airport.DAL.Entities
 
         [Required]
         public DateTime DepartureTime { get; set; }
-
-        
+                
         public ICollection<Ticket> Tickets { get; set; }
     }
 }

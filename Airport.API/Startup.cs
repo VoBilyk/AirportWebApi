@@ -55,8 +55,8 @@ namespace Airport.API
             services.AddTransient<IValidator<Ticket>, TicketValidator>();
 
             services.AddDbContext<AirportContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("AirportDb"), b => b.MigrationsAssembly("Airport.DAL")),
-               ServiceLifetime.Transient);
+               options.UseSqlServer(Configuration.GetConnectionString("AirportDb")),//, b => b.MigrationsAssembly("Airport.DAL")),
+               ServiceLifetime.Singleton);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
