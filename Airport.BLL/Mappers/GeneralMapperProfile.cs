@@ -24,8 +24,7 @@ namespace Airport.BLL.Mappers
             CreateMap<StewardessDto, Stewardess>()
                 .ForMember(model => model.Crew, dto => dto.Ignore())
                 .ForMember(model => model.Id, dto => dto.Ignore());
-
-
+            
             CreateMap<AeroplaneDto, Aeroplane>()
                 .ForMember(model => model.AeroplaneType, dto => dto.Ignore())
                 .ForMember(model => model.LifetimeFullForm, dto => dto.MapFrom(m => m.Lifetime));
@@ -46,16 +45,6 @@ namespace Airport.BLL.Mappers
                 .ForMember(model => model.Id, dto => dto.Ignore())
                 .ForMember(model => model.Pilot, dto => dto.Ignore())
                 .ForMember(model => model.Stewardesses, dto => dto.Ignore());
-
-            //CreateMap<FullCrewDto, Crew>()
-            //    .ForMember(model => model.Pilot, 
-            //    dto => dto.MapFrom(m => Mapper.Map<PilotDto, Pilot>(m.Pilot[0])))
-            //    .ForMember(model => model.Stewardesses, 
-            //    dto => dto.MapFrom(m => Mapper.Map<List<StewardessDto>,List<Stewardess>>(m.Stewardesses.Select(s => s).ToList())));
-
-            //CreateMap<Crew, FullCrewDto>()
-            //    .ForMember(dto => dto.Pilot[0].CrewId, model => model.MapFrom(m => m.Pilot.Id))
-            //    .ForMember(dto => dto.Stewardesses.StewardessesId, model => model.MapFrom(m => m.Stewardesses.Select(s => s.Id)));
 
             CreateMap<DepartureDto, Departure>()
                 .ForMember(model => model.Airplane, dto => dto.Ignore())
