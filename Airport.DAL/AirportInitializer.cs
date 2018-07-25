@@ -50,7 +50,7 @@ namespace Airport.DAL
                 .RuleFor(o => o.Id, f => Guid.NewGuid())
                 .RuleFor(o => o.AeroplaneType, f => aeroplaneTypeFaker.Generate())
                 .RuleFor(o => o.Name, f => f.Lorem.Word())
-                .RuleFor(o => o.LifetimeFullForm, f => f.Date.Timespan(new TimeSpan(5*365, 0, 0, 0)));
+                .RuleFor(o => o.LifetimeFullForm, f => f.Date.Timespan(new TimeSpan(365, 0, 0, 0)));
 
             var departureFaker = new Faker<Departure>()
                 .RuleFor(o => o.Id, f => Guid.NewGuid())
