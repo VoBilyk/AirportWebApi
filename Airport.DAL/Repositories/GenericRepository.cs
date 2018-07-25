@@ -47,7 +47,8 @@ namespace Airport.DAL.Repositories
         public virtual async Task CreateAsync(TEntity item)
         {
             TEntity foundedItem = await dbSet.FindAsync(item.Id);
-
+            context.Entry(foundedItem).State = EntityState.Detached;
+            
             if (foundedItem != null)
             {
                 throw new ArgumentException($"Item id: {item.Id}, has already exist");
@@ -65,6 +66,7 @@ namespace Airport.DAL.Repositories
         public virtual async Task UpdateAsync(TEntity item)
         {
             TEntity foundedItem = await dbSet.FindAsync(item.Id);
+            context.Entry(foundedItem).State = EntityState.Detached;
 
             if (foundedItem == null)
             {
@@ -77,7 +79,8 @@ namespace Airport.DAL.Repositories
         public virtual async Task DeleteAsync(Guid id)
         {
             var item = await dbSet.FindAsync(id);
-
+            context.Entry(item).State = EntityState.Detached;
+            
             if (item == null)
             {
                 throw new ArgumentException($"Item id: {id}, don`t exist");

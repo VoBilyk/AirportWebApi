@@ -1,19 +1,19 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using FluentValidation;
+
 using Airport.DAL;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
 using Airport.BLL.Interfaces;
 using Airport.BLL.Services;
-using Airport.Shared.DTO;
 using Airport.BLL.Validators;
 using Airport.BLL.Mappers;
+
 
 namespace Airport.API
 {
@@ -29,8 +29,6 @@ namespace Airport.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
             //Instance injection
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITicketService, TicketService>();
@@ -41,7 +39,7 @@ namespace Airport.API
             services.AddScoped<IStewardessService, StewardessService>();
             services.AddScoped<IFlightService, FlightService>();
             services.AddScoped<IDepartureService, DepartureService>();
-            
+
             var config = new MapperConfiguration(cfg => cfg.AddProfile(new GeneralMapperProfile()));
             services.AddSingleton(_ => config.CreateMapper());
 
@@ -55,11 +53,19 @@ namespace Airport.API
             services.AddTransient<IValidator<Ticket>, TicketValidator>();
 
             services.AddDbContext<AirportContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("AirportDb")),//, b => b.MigrationsAssembly("Airport.DAL")),
-               ServiceLifetime.Singleton);
+               options.UseSqlServer(Configuration.GetConnectionString("AirportDb")));//, b => b.MigrationsAssembly("Airport.DAL")),
+               //ServiceLifetime.Singleton);
+
+            services.AddCors(
+                options => options.AddPolicy("CorsPolicy", 
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()));
+
+            services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -67,6 +73,7 @@ namespace Airport.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }

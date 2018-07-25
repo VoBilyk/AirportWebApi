@@ -34,8 +34,8 @@ namespace Airport.BLL.Services
 
         public async Task<List<PilotDto>> GetAllAsync()
         {
-            var pilots = db.PilotRepositiry.GetAllAsync();
-            return await mapper.Map<Task<List<Pilot>>, Task<List<PilotDto>>>(pilots);
+            var pilots = await db.PilotRepositiry.GetAllAsync();
+            return mapper.Map<List<Pilot>, List<PilotDto>>(pilots);
         }
         
         public async Task<PilotDto> CreateAsync(PilotDto pilotDto)
