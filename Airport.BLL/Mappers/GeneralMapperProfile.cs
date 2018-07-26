@@ -27,11 +27,11 @@ namespace Airport.BLL.Mappers
             
             CreateMap<AeroplaneDto, Aeroplane>()
                 .ForMember(model => model.AeroplaneType, dto => dto.Ignore())
-                .ForMember(model => model.LifetimeFullForm, dto => dto.MapFrom(m => m.Lifetime));
+                .ForMember(model => model.LifeTimeHourses, dto => dto.MapFrom(m => m.Lifetime));
 
             CreateMap<Aeroplane, AeroplaneDto>()
                 .ForMember(dto => dto.AeroplaneTypeId, model => model.MapFrom(m => m.AeroplaneType.Id))
-                .ForMember(dto => dto.Lifetime, model => model.MapFrom(m => m.LifetimeFullForm));
+                .ForMember(dto => dto.Lifetime, model => model.MapFrom(m => m.LifeTimeHourses));
 
             CreateMap<CrewDto, Crew>()
                 .ForMember(model => model.Id, dto => dto.Ignore())

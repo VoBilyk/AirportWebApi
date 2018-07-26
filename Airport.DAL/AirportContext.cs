@@ -34,6 +34,9 @@ namespace Airport.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Crew>()
+            .HasMany(c => c.Stewardesses)
+            .WithOne();
         }
     }
 }
