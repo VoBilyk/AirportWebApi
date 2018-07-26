@@ -11,8 +11,7 @@ using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
 using Airport.Shared.DTO;
-using Newtonsoft.Json.Linq;
-using System.IO;
+
 
 namespace Airport.BLL.Services
 {
