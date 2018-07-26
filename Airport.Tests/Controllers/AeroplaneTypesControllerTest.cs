@@ -70,7 +70,7 @@ namespace Airport.Tests.Controllers
             };
 
             var fakeService = A.Fake<IAeroplaneTypeService>();
-            A.CallTo(() => fakeService.UpdateAsync(AeroplaneType.Id, AeroplaneType)).Returns(AeroplaneType);
+            A.CallTo(() => fakeService.UpdateAsync(AeroplaneType.Id.Value, AeroplaneType)).Returns(AeroplaneType);
 
             var controller = new AeroplaneTypesController(fakeService);
 

@@ -52,7 +52,7 @@ namespace Airport.Tests.Services
             var returnedDto = service.CreateAsync(dto).Result;
 
             // Assert
-            Assert.True(returnedDto.Id != default(Guid));
+            Assert.True(returnedDto.Id != default(Guid).ToString());
             Assert.AreEqual(dto.FirstName, returnedDto.FirstName);
             Assert.AreEqual(dto.LastName, returnedDto.LastName);
             Assert.AreEqual(dto.BirthDate, returnedDto.BirthDate);
@@ -69,7 +69,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
+            Assert.Throws<ValidationException>(() => service.CreateAsync(dto).Wait());
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Airport.Tests.Services
             var returnedDto = service.UpdateAsync(id, dto).Result;
 
             // Assert
-            Assert.True(returnedDto.Id == id);
+            Assert.True(returnedDto.Id == id.ToString());
             Assert.AreEqual(dto.FirstName, returnedDto.FirstName);
             Assert.AreEqual(dto.LastName, returnedDto.LastName);
             Assert.AreEqual(dto.BirthDate, returnedDto.BirthDate);
@@ -109,7 +109,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
+            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto).Wait());
         }
     }
 }

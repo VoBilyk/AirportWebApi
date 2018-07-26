@@ -24,18 +24,14 @@ namespace Airport.DAL.Entities
         public ICollection<Departure> Departures { get; set; }
 
         [NotMapped]
-        private TimeSpan LifetimeTimeSpan;
-
-        [NotMapped]
         public TimeSpan LifetimeFullForm {
             get
             {
-                return LifetimeTimeSpan;
+                return TimeSpan.FromHours(LifeTimeHourses);
             }
 
             set
             {
-                LifetimeTimeSpan = value;
                 LifeTimeHourses = value.TotalHours;
             }
         }

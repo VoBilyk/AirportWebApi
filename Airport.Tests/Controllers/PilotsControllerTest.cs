@@ -35,9 +35,10 @@ namespace Airport.Tests.Controllers
         public void POST_WhenPostNewItem_ThenServiceReturnOkAndThisObject()
         {
             //Arrange
+            var id = Guid.NewGuid();
             var pilot = new PilotDto
             {
-                Id = Guid.NewGuid(),
+                Id = id.ToString(),
                 FirstName = "FirstName",
                 LastName = "SecondName",
                 Experience = 4,
@@ -61,9 +62,10 @@ namespace Airport.Tests.Controllers
         public void PUT_WhenPuttNewItem_ThenServiceReturnOkAndThisObject()
         {
             //Arrange
+            var id = Guid.NewGuid();
             var pilot = new PilotDto
             {
-                Id = Guid.NewGuid(),
+                Id = id.ToString(),
                 FirstName = "FirstName",
                 LastName = "SecondName",
                 Experience = 4,
@@ -71,7 +73,7 @@ namespace Airport.Tests.Controllers
             };
 
             var fakeService = A.Fake<IPilotService>();
-            A.CallTo(() => fakeService.UpdateAsync(pilot.Id, pilot)).Returns(pilot);
+            A.CallTo(() => fakeService.UpdateAsync(id, pilot)).Returns(pilot);
 
             var controller = new PilotsController(fakeService);
 

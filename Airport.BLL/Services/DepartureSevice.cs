@@ -34,8 +34,8 @@ namespace Airport.BLL.Services
 
         public async Task<List<DepartureDto>> GetAllAsync()
         {
-            var departures = db.DepartureRepository.GetAllAsync();
-            return await mapper.Map<Task<List<Departure>>, Task<List<DepartureDto>>>(departures);
+            var departures = await db.DepartureRepository.GetAllAsync();
+            return mapper.Map<List<Departure>, List<DepartureDto>>(departures);
         }
 
         public async Task<DepartureDto> CreateAsync(DepartureDto departureDto)
