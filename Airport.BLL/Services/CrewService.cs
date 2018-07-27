@@ -11,8 +11,7 @@ using Airport.BLL.Interfaces;
 using Airport.DAL.Interfaces;
 using Airport.DAL.Entities;
 using Airport.Shared.DTO;
-using Newtonsoft.Json.Linq;
-using System.IO;
+
 
 namespace Airport.BLL.Services
 {
@@ -72,6 +71,10 @@ namespace Airport.BLL.Services
             crew.Id = id;
             crew.Pilot = await db.PilotRepositiry.GetAsync(crewDto.PilotId);
             crew.Stewardesses = await db.StewardessRepositiry.FindAsync(i => crewDto.StewardessesId.Contains(i.Id));
+
+            // Delete stewardess which not belog to crew more.
+            var cr = await db.CrewRepositiry.GetAsync(id);
+            cr.Stewardesses.Where(s => !crew.Stewardesses.Contains(s)).ToList().ForEach(x => db.StewardessRepositiry.DeleteAsync(x.Id));
 
             var validationResult = validator.Validate(crew);
 
