@@ -20,8 +20,8 @@ namespace Airport.DAL.Interfaces
         
         Task UpdateAsync(TEntity item);
 
-        Task DeleteAsync(Guid id);
+        Task Delete(Guid id);
 
-        Task DeleteAsync();
+        void Delete();
     }
 }

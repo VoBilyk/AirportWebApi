@@ -74,7 +74,7 @@ namespace Airport.BLL.Services
 
             // Delete stewardess which not belog to crew more.
             var cr = await db.CrewRepositiry.GetAsync(id);
-            cr.Stewardesses.Where(s => !crew.Stewardesses.Contains(s)).ToList().ForEach(x => db.StewardessRepositiry.DeleteAsync(x.Id));
+            cr.Stewardesses.Where(s => !crew.Stewardesses.Contains(s)).ToList().ForEach(x => db.StewardessRepositiry.Delete(x.Id));
 
             var validationResult = validator.Validate(crew);
 
@@ -93,13 +93,13 @@ namespace Airport.BLL.Services
 
         public async Task DeleteAsync(Guid id)
         {
-            await db.CrewRepositiry.DeleteAsync(id);
+            await db.CrewRepositiry.Delete(id);
             await db.SaveChangesAsync();
         }
 
         public async Task DeleteAllAsync()
         {
-            await db.CrewRepositiry.DeleteAsync();
+            db.CrewRepositiry.Delete();
             await db.SaveChangesAsync();
         }
         
