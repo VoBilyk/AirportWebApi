@@ -81,13 +81,13 @@ namespace Airport.BLL.Services
 
         public async Task DeleteAsync(Guid id)
         {
-            await db.TicketRepository.DeleteAsync(id);
+            await db.TicketRepository.Delete(id);
             await db.SaveChangesAsync();
         }
 
         public async Task DeleteAllAsync()
         {
-            await db.TicketRepository.DeleteAsync();
+            db.TicketRepository.Delete();
             await db.SaveChangesAsync();
         }
     }
