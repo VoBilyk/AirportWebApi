@@ -45,7 +45,7 @@ namespace Airport.Tests.Services
             {
                 AeroplaneTypeId = aeroplaneTypeId,
                 Name = "Boeing-747",
-                Lifetime = new TimeSpan(10,0,0)
+                Lifetime = 100
             };
 
             A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.GetAsync(aeroplaneTypeId))
@@ -74,7 +74,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.CreateAsync(dto).Wait());
+            Assert.Throws<AggregateException>(() => service.CreateAsync(dto).Wait());
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Airport.Tests.Services
             {
                 AeroplaneTypeId = aeroplaneTypeId,
                 Name = "Boeing-747",
-                Lifetime = new TimeSpan(10, 0, 0)
+                Lifetime = 100
             };
 
             A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.GetAsync(aeroplaneTypeId))
@@ -119,7 +119,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
+            Assert.Throws<AggregateException>(() => service.UpdateAsync(id, dto).Wait());
         }
     }
 }

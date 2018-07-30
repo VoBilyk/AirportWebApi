@@ -37,47 +37,6 @@ namespace Airport.Tests.Services
         }
 
         [Test]
-        public void Create_WhenDtoIsPassed_ThenReturnedTheSameWithCreatedId()
-        {
-            // Arrange
-            var ticketsId = new List<Guid>
-                {
-                    Guid.NewGuid()
-                };
-
-            var dto = new FlightDto()
-            {
-                Name = "AAA-111",
-                Destinition = "B",
-                DeparturePoint = "A",
-                ArrivalTime = new DateTime(2018, 07, 17, 13, 0, 0),
-                DepartureTime = new DateTime(2018, 07, 17, 14, 0, 0),
-                TicketsId = ticketsId
-            };
-
-            A.CallTo(() => unitOfWorkFake.TicketRepository.GetAllAsync())
-                .Returns(new List<Ticket> { new Ticket { Id = ticketsId[0] } });
-
-            var service = new FlightService(unitOfWorkFake, mapper, alwaysValidValidator);
-
-            // Act
-            var returnedDto = service.CreateAsync(dto).Result;
-
-            // Assert
-            Assert.True(returnedDto.Id != default(Guid));
-            Assert.AreEqual(dto.Name, returnedDto.Name);
-            Assert.AreEqual(dto.Destinition, returnedDto.Destinition);
-            Assert.AreEqual(dto.DepartureTime, returnedDto.DepartureTime);
-            Assert.AreEqual(dto.DeparturePoint, returnedDto.DeparturePoint);
-            Assert.AreEqual(dto.TicketsId.Count, returnedDto.TicketsId.Count);
-
-            foreach (var item in dto.TicketsId)
-            {
-                Assert.Contains(item, returnedDto.TicketsId);
-            }
-        }
-
-        [Test]
         public void Create_WhenDtoIsEmpty_ThenThrowValidExeption()
         {
             // Arrange
@@ -88,50 +47,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
-        }
-
-        [Test]
-        public void Update_WhenDtoIsPassed_ThenReturnedTheSameWithPassedId()
-        {
-            // Arrange
-            var id = Guid.NewGuid();
-
-            var ticketsId = new List<Guid>
-                {
-                    Guid.NewGuid()
-                };
-
-            var dto = new FlightDto()
-            {
-                Name = "AAA-111",
-                Destinition = "B",
-                DeparturePoint = "A",
-                ArrivalTime = new DateTime(2018, 07, 17, 13, 0, 0),
-                DepartureTime = new DateTime(2018, 07, 17, 14, 0, 0),
-                TicketsId = ticketsId
-            };
-
-            A.CallTo(() => unitOfWorkFake.TicketRepository.GetAllAsync())
-                .Returns(new List<Ticket> { new Ticket { Id = ticketsId[0] } });
-
-            var service = new FlightService(unitOfWorkFake, mapper, alwaysValidValidator);
-
-            // Act
-            var returnedDto = service.UpdateAsync(id, dto).Result;
-
-            // Assert
-            Assert.True(returnedDto.Id != default(Guid));
-            Assert.AreEqual(dto.Name, returnedDto.Name);
-            Assert.AreEqual(dto.Destinition, returnedDto.Destinition);
-            Assert.AreEqual(dto.DepartureTime, returnedDto.DepartureTime);
-            Assert.AreEqual(dto.DeparturePoint, returnedDto.DeparturePoint);
-            Assert.AreEqual(dto.TicketsId.Count, returnedDto.TicketsId.Count);
-
-            foreach (var item in dto.TicketsId)
-            {
-                Assert.Contains(item, returnedDto.TicketsId);
-            }
+            Assert.Throws<AggregateException>(() => service.CreateAsync(dto).Wait());
         }
 
         [Test]
@@ -146,7 +62,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
+            Assert.Throws<AggregateException>(() => service.UpdateAsync(id, dto).Wait());
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Airport.Tests.Requests
             serverName = "http://localhost:57338";
 
             var builder = new DbContextOptionsBuilder<AirportContext>()
-                .UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AirportDb(Bilyk);Trusted_Connection=True;");
+                .UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AirportDb(Test);Trusted_Connection=True;");
 
             addedItem = Initializer.CrewFaker.Generate();
 
