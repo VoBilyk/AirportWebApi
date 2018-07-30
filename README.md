@@ -5,6 +5,7 @@
 * Предметна область спроектована за [файл](https://docs.google.com/document/d/1ND_K4P_XMS5WfbUnIVUBkqEn6aGjCtZ-qGPMTl5n7KM/edit?usp=sharing)
 * Проект створено за багаторівневою архітектурою (Presentation layer, Business layer, Data Access layer)
 * Data Access layer сформовано за UnitOfWork принципом
+
 *Використано IoC контейнер, Fluent Validator, AutoMapper, Bogus, Newtonsoft.Json*
 
 ## Upd1: підключено базу даних
