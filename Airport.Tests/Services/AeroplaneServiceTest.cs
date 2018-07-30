@@ -74,7 +74,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.CreateAsync(dto).Wait());
+            Assert.Throws<AggregateException>(() => service.CreateAsync(dto).Wait());
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
+            Assert.Throws<AggregateException>(() => service.UpdateAsync(id, dto).Wait());
         }
     }
 }

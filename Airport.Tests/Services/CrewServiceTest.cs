@@ -38,40 +38,6 @@ namespace Airport.Tests.Services
         }
 
         [Test]
-        public void Create_WhenDtoIsPassed_ThenReturnedTheSameWithCreatedId()
-        {
-            // Arrange
-            var pilotId = Guid.NewGuid();
-            var stewardessesId = new List<Guid> { Guid.NewGuid() };
-
-            var dto = new CrewDto()
-            {
-                PilotId = pilotId,
-                StewardessesId = stewardessesId
-            };
-
-            A.CallTo(() => unitOfWorkFake.PilotRepositiry.GetAsync(pilotId)).Returns(new Pilot { Id = pilotId });
-
-            A.CallTo(() => unitOfWorkFake.StewardessRepositiry.GetAllAsync())
-                .Returns(new List<Stewardess> { new Stewardess { Id = stewardessesId[0] } });
-
-            var service = new CrewService(unitOfWorkFake, mapper, alwaysValidValidator);
-
-            // Act
-            var returnedDto = service.CreateAsync(dto).Result;
-
-            // Assert
-            Assert.True(returnedDto.Id != default(Guid));
-            Assert.AreEqual(dto.PilotId, returnedDto.PilotId);
-            Assert.AreEqual(dto.StewardessesId.Count, returnedDto.StewardessesId.Count);
-
-            foreach (var item in dto.StewardessesId)
-            {
-                Assert.Contains(item, returnedDto.StewardessesId);
-            }
-        }
-
-        [Test]
         public void Create_WhenDtoIsEmpty_ThenThrowValidExeption()
         {
             // Arrange
@@ -82,42 +48,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.CreateAsync(dto));
-        }
-
-        [Test]
-        public void Update_WhenDtoIsPassed_ThenReturnedTheSameWithPassedId()
-        {
-            // Arrange
-            var id = Guid.NewGuid();
-            var pilotId = Guid.NewGuid();
-            var stewardessesId = new List<Guid> { Guid.NewGuid() };
-
-            var dto = new CrewDto()
-            {
-                PilotId = pilotId,
-                StewardessesId = stewardessesId
-            };
-
-            A.CallTo(() => unitOfWorkFake.PilotRepositiry.GetAsync(pilotId)).Returns(new Pilot { Id = pilotId });
-
-            A.CallTo(() => unitOfWorkFake.StewardessRepositiry.GetAllAsync())
-                .Returns(new List<Stewardess> { new Stewardess { Id = stewardessesId[0] } });
-
-            var service = new CrewService(unitOfWorkFake, mapper, alwaysValidValidator);
-
-            // Act
-            var returnedDto = service.UpdateAsync(id, dto).Result;
-
-            // Assert
-            Assert.True(returnedDto.Id != default(Guid));
-            Assert.AreEqual(dto.PilotId, returnedDto.PilotId);
-            Assert.AreEqual(dto.StewardessesId.Count, returnedDto.StewardessesId.Count);
-
-            foreach (var item in dto.StewardessesId)
-            {
-                Assert.Contains(item, returnedDto.StewardessesId);
-            }
+            Assert.Throws<AggregateException>(() => service.CreateAsync(dto).Wait());
         }
 
         [Test]
@@ -132,7 +63,7 @@ namespace Airport.Tests.Services
             // Act
 
             // Assert
-            Assert.Throws<ValidationException>(() => service.UpdateAsync(id, dto));
+            Assert.Throws<AggregateException>(() => service.UpdateAsync(id, dto).Wait());
         }
     }
 }
