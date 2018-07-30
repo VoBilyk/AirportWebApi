@@ -45,7 +45,7 @@ namespace Airport.Tests.Services
             {
                 AeroplaneTypeId = aeroplaneTypeId,
                 Name = "Boeing-747",
-                Lifetime = new TimeSpan(10,0,0)
+                Lifetime = 100
             };
 
             A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.GetAsync(aeroplaneTypeId))
@@ -88,7 +88,7 @@ namespace Airport.Tests.Services
             {
                 AeroplaneTypeId = aeroplaneTypeId,
                 Name = "Boeing-747",
-                Lifetime = new TimeSpan(10, 0, 0)
+                Lifetime = 100
             };
 
             A.CallTo(() => unitOfWorkFake.AeroplaneTypeRepository.GetAsync(aeroplaneTypeId))
